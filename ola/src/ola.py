@@ -33,6 +33,11 @@ t_NOT = r'NOT'
 t_AND = r'AND'
 t_OR = r'OR'
 
+def t_IDENT_KEYWORD(t):
+    r'SOME | ALL | VALUE | MIN | MAX | EXACTLY | THAT | NOT | AND| OR'
+    t.value = t.value
+    return t
+
 def t_IDENT_CLASS(t):
     r'[A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*)'
     t.value = t.value
@@ -60,8 +65,8 @@ def t_error(t):
 lexer = lex.lex()
 
 # Exemplo de uso
-data = "Pizza THAT hasTopping SOME MozzarellaTopping AND hasTopping SOME TomatoTopping AND hasTopping ONLY (MozzarellaTopping OR TomatoTopping OR PepperonniTopping)"
-lexer.input(data)
+owl_source = "Pizza THAT hasTopping SOME MozzarellaTopping AND hasTopping SOME TomatoTopping AND hasTopping ONLY (MozzarellaTopping OR TomatoTopping OR PepperonniTopping)"
+lexer.input(owl_source)
 
 while True:
     tok = lexer.token()
