@@ -1,10 +1,18 @@
 """
     OLA - OWL Lexycal Analyzer
+
+    Script para definição de um analisador léxico utilizando a biblioteca ply.
+    Ply é um port do yacc-lex para python
+    
+    TODO: Saber se é possivel fazer o analisador sintático usando o ply
+
+    At: UFERSA - Campus Mossoró - 07/12/2023
 """
 
-import ply.lex as lex
+import lex
 
-# Lista de tokens
+# Determinando propriedades do analisador, tokens e expressoes regulares necessárias para o parser
+
 tokens = [
     'SOME',
     'ALL',
@@ -18,29 +26,18 @@ tokens = [
     'OR',
     'IDENT_CLASS',
     'IDENT_PROPERTY',
+    'IDENT_KEYWORD'
     'CARDINALITY'
 ]
 
-# Expressões regulares para os tokens
-t_SOME = r'SOME'
-t_ALL = r'ALL'
-t_VALUE = r'VALUE'
-t_MIN = r'MIN'
-t_MAX = r'MAX'
-t_EXACTLY = r'EXACTLY'
-t_THAT = r'THAT'
-t_NOT = r'NOT'
-t_AND = r'AND'
-t_OR = r'OR'
-
 def t_IDENT_KEYWORD(t):
-    r'SOME | ALL | VALUE | MIN | MAX | EXACTLY | THAT | NOT | AND| OR'
-    t.value = t.value
+    r'SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY | exactly | THAT | that | NOT | not | AND | and | OR | or'
+    
     return t
 
 def t_IDENT_CLASS(t):
     r'[A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*)'
-    t.value = t.value
+    
     return t
 
 def t_IDENT_PROPERTY(t):
@@ -48,7 +45,7 @@ def t_IDENT_PROPERTY(t):
     t.value = t.value
     return t
 
-def t_CARDINALITY(t):
+def t_IDENT_CARDINALITY(t):
     r'\d+'
     t.value = int(t.value)
     return t
@@ -61,19 +58,54 @@ def t_error(t):
     print(f"Caractere não reconhecido: {t.value[0]}")
     t.lexer.skip(1)
 
-# Criar o lexer
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# Exemplos de codigo fonte owl em manchester syntax
+owl_source_1 = """
+Pizza THAT 
+    hasTopping SOME MozzarellaTopping AND 
+    hasTopping SOME TomatoTopping AND 
+    hasTopping ONLY (MozzarellaTopping OR TomatoTopping OR PepperonniTopping)
+"""
+
+owl_source_2 = """
+Pizza THAT
+    hasTopping min 3
+"""
+
+owl_source_3 = """
+PizzaTopping AND
+    CheeseTopping THAT
+        hasSpiciness SOME Mild and
+        hasCountryOfOrigin VALUE Italy
+"""
+
+# Listando codigos fontes em OWL
+source_code_list = [owl_source_1, owl_source_2, owl_source_3]
+lexical_analysis = []
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# Instaciando o lexer e aplicando nos codigos fontes definidos acima
 lexer = lex.lex()
 
-# Exemplo de uso
-owl_source = "Pizza THAT hasTopping SOME MozzarellaTopping AND hasTopping SOME TomatoTopping AND hasTopping ONLY (MozzarellaTopping OR TomatoTopping OR PepperonniTopping)"
-lexer.input(owl_source)
+print("\n\n..........................")
+print("...OWL LEXYCAL ANALYZER...")
+print("..........................")
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+# Aplicando o lexer em cada codigo fonte e retornando uma lista com os lexemas de cada
+for index, src in enumerate(source_code_list):
+    print(f"\n\nLENDO CODIGO FONTE {index + 1} E GERANDO LEXEMAS")
+    print("...................................................")
+    lexer.input(src)
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        print(tok)
+        lexical_analysis.append(tok)
+    print("...................................................")
 
-
-
+print()
 
