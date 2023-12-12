@@ -73,7 +73,7 @@ def t_SPECIAL_SYMBOL(t):
     return t
 
 def t_OPERATOR(t):
-    r'< | > | <= | >= | =='
+    r'(<)[ A-z0-9\[\]\(\)] | (>)[ A-z0-9\[\]\(\)] | <= | >= | =='
     return t
 
 # Ignorar caracteres em branco
