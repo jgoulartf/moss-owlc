@@ -72,8 +72,9 @@ def t_SPECIAL_SYMBOL(t):
     r'\[ | \] | \( | \)'
     return t
 
+# TODO: Confirmar com o professor
 def t_OPERATOR(t):
-    r'(<)[ A-z0-9\[\]\(\)] | (>)[ A-z0-9\[\]\(\)] | <= | >= | =='
+    r'< | > | = | =='
     return t
 
 # Ignorar caracteres em branco
@@ -150,5 +151,4 @@ print()
 
 
 # TODO: Construir dataframe pandas para representar a tabela de símbolos, quantificando cada tipo de lexema.
-
 
