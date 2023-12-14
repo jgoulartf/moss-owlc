@@ -40,24 +40,29 @@ literals = [
 ]
 
 def t_KEYWORD(t):
-    r'SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY | exactly | THAT | that | NOT | not | AND | and | OR | or'
+    r'Class: | EquivalentTo: | Individuals: | SubClassOf: | DisjointClasses: | \
+    SOME | some | ALL | all | VALUE | value | MI*N | min | MAX | max | EXACTLY | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
     return t
 
 def t_CLASS(t):
-    r'[A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*)'
+    r'([A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*)) '
+    return t
+
+def t_INDIVIDUAL(t):
+    r'([A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*))[0-9]+'
     return t
 
 def t_PROPERTY(t):
-    r'has[A-Z][a-zA-Z]*|is.*Of'
+    r'has[A-Z][a-zA-Z]*|is.*Of| [a-z]+[A-Z]+[a-z]+'
     return t
 
 def t_CARDINALITY(t):
-    r'\d+'
+    r'\s+[0-9]\s+'
     t.value = int(t.value)
     return t
 
 def t_TYPE(t):
-    r'(integer | INTEGER | boolean | BOOLEAN | decimal | DECIMAL)'
+    r'(integer | INTEGER | boolean | BOOLEAN | decimal | DECIMAL | string | String | REAL | real)'
     return t
 
 def t_NUMERAL(t):
@@ -69,12 +74,11 @@ def t_STRING(t):
     return t
 
 def t_SPECIAL_SYMBOL(t):
-    r'\[ | \] | \( | \)'
+    r'\[ | \] | \( | \) | { | } | < | > | = | == | \,'
     return t
 
-# TODO: Confirmar com o professor
-def t_OPERATOR(t):
-    r'< | > | = | =='
+def t_NAMESPACE(t):
+    r'([a-z]+):'
     return t
 
 # Ignorar caracteres em branco
@@ -122,7 +126,13 @@ Pizza THAT
             PepperonniTopping)
 """
 
-source_code_list = [owl_source_1, owl_source_2, owl_source_3, owl_source_4, owl_source_5]
+# Lendo arquivo de teste fornecido pelo professor
+with open('Pizza_Ontology_in_OWL_Manchester_Syntax.txt') as f:
+    source = f.read()
+
+source = str(source)
+
+source_code_list = [source]
 lexical_analysis = []
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -134,6 +144,8 @@ print("\n\n..........................")
 print("...OWL LEXYCAL ANALYZER...")
 print("..........................")
 
+counters = {"class": 0, "keyword": 0, "property": 0, "special_symbol": 0, "native_types": 0}
+
 # Aplicando o lexer em cada codigo fonte e retornando uma lista com os lexemas de cada
 for index, src in enumerate(source_code_list):
     print(f"\n\nLENDO CODIGO FONTE {index + 1} E GERANDO LEXEMAS")
@@ -143,12 +155,12 @@ for index, src in enumerate(source_code_list):
         tok = lexer.token()
         if not tok:
             break
-        print(tok)
+        print(f"Lexem: {tok.type}, Value: {tok.value}")
+        
         lexical_analysis.append(tok)
     print("...................................................")
 
 print()
-
 
 # TODO: Construir dataframe pandas para representar a tabela de símbolos, quantificando cada tipo de lexema.
 
