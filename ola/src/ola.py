@@ -41,11 +41,11 @@ literals = [
 
 def t_KEYWORD(t):
     r'Class: | EquivalentTo: | Individuals: | SubClassOf: | DisjointClasses: | \
-    SOME | some | ALL | all | VALUE | value | MI*N | min | MAX | max | EXACTLY | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
+    SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
     return t
 
 def t_CLASS(t):
-    r'([A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*)) '
+    r'([A-Z][a-zA-Z]*)\s | (([A-Z][a-zA-Z]*))\)'
     return t
 
 def t_INDIVIDUAL(t):
@@ -53,7 +53,7 @@ def t_INDIVIDUAL(t):
     return t
 
 def t_PROPERTY(t):
-    r'has[A-Z][a-zA-Z]*|is.*Of| [a-z]+[A-Z]+[a-z]+'
+    r'has[A-Z][a-zA-Z]*|is.*Of| [a-z]+[A-Z]+[a-z]+ | \(([a-z]+)\s'
     return t
 
 def t_CARDINALITY(t):
@@ -79,6 +79,10 @@ def t_SPECIAL_SYMBOL(t):
 
 def t_NAMESPACE(t):
     r'([a-z]+):'
+    return t
+
+def t_SPACE(t):
+    r'\s'
     return t
 
 # Ignorar caracteres em branco
@@ -155,7 +159,8 @@ for index, src in enumerate(source_code_list):
         tok = lexer.token()
         if not tok:
             break
-        print(f"Lexem: {tok.type}, Value: {tok.value}")
+        if tok.type != "SPACE":
+            print(f"Lexem: {tok.type}, Value: {tok.value}")
         
         lexical_analysis.append(tok)
     print("...................................................")
