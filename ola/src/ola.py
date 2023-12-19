@@ -82,7 +82,7 @@ def t_NAMESPACE(t):
     return t
 
 # Ignorar caracteres em branco
-t_ignore = ' \t\n'
+t_ignore = '\t\n'
 
 # Tratamento de erros>=
 def t_error(t):
