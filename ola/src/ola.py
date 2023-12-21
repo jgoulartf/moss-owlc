@@ -46,15 +46,15 @@ def t_KEYWORD(t):
     return t
 
 def t_CLASS(t):
-    r'([A-Z][a-zA-Z]*)\s | (([A-Z][a-zA-Z]*))\)'
+    r'[A-Z][a-zA-Z]*(?![a-zA-Z0-9_])'
     return t
 
 def t_INDIVIDUAL(t):
-    r'([A-Z][a-zA-Z]*|([A-Z][a-zA-Z]*([A-Z][a-zA-Z]*|_[A-Z][a-zA-Z]*)*))[0-9]+'
+    r'[A-Z][a-zA-Z]*(?:_[A-Z][a-zA-Z]*)*[0-9]+'
     return t
 
 def t_PROPERTY(t):
-    r'has[A-Z][a-zA-Z]*|is.*Of| [a-z]+[A-Z]+[a-z]+ | \(([a-z]+)\s'
+    r'has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z])|\([a-z]+\s'
     return t
 
 def t_CARDINALITY(t):
@@ -80,6 +80,7 @@ def t_SPECIAL_SYMBOL(t):
 
 def t_NAMESPACE(t):
     r'([a-z]+):'
+    t.value = t.value.rstrip(':')  # Remove os dois pontos do valor retornado
     return t
 
 def t_SPACE(t):
