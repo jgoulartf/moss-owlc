@@ -189,10 +189,9 @@ for index, src in enumerate(source_code_list):
     print("...................................................")
 
 
-# TODO: Construir dataframe pandas para representar a tabela de símbolos, quantificando cada tipo de lexema.
-
-
-
+# Fataframe pandas para representar a tabela de símbolos, quantificando cada tipo de token.
 symbols_table = pd.DataFrame(list(counters.items()), columns=['Token Type', 'Count'])
+print("......Symbols table......")
+print(".........................")
 print(symbols_table)
 
