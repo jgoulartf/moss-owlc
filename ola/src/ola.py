@@ -13,7 +13,7 @@
 """
 
 import lex
-#import pandas as pd
+import pandas as pd
 
 # Determinando propriedades do analisador, tokens e expressoes regulares necessárias para o parser
 
@@ -41,7 +41,8 @@ literals = [
 
 def t_KEYWORD(t):
     r'Class: | EquivalentTo: | Individuals: | SubClassOf: | DisjointClasses: | \
-    SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
+    SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY \
+    | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
     return t
 
 def t_CLASS(t):
@@ -66,7 +67,7 @@ def t_TYPE(t):
     return t
 
 def t_NUMERAL(t):
-    r'"([0-9]+)"'
+    r'([0-9]+)'
     return t
     
 def t_STRING(t):
@@ -148,7 +149,20 @@ print("\n\n..........................")
 print("...OWL LEXYCAL ANALYZER...")
 print("..........................")
 
-counters = {"class": 0, "keyword": 0, "property": 0, "special_symbol": 0, "native_types": 0}
+# Dicionario para contar cada tipo de lexema.
+counters = {
+    "KEYWORD": 0,
+    "CLASS": 0,
+    "INDIVIDUAL": 0,
+    "PROPERTY": 0,
+    "CARDINALITY": 0,
+    "TYPE": 0,
+    "NUMERAL": 0,
+    "STRING": 0,
+    "SPECIAL_SYMBOL": 0,
+    "NAMESPACE": 0,
+    "SPACE": 0
+    }
 
 # Aplicando o lexer em cada codigo fonte e retornando uma lista com os lexemas de cada
 for index, src in enumerate(source_code_list):
@@ -157,15 +171,28 @@ for index, src in enumerate(source_code_list):
     lexer.input(src)
     while True:
         tok = lexer.token()
+        
         if not tok:
             break
+        
+        #counters[f"{tok.type}"] += 1
+        #print(f"{tok.type}")
+        token = tok.type
+        #print("tok", tok.type)
+        counters[token] += 1
+        
+        
         if tok.type != "SPACE":
             print(f"Lexem: {tok.type}, Value: {tok.value}")
         
         lexical_analysis.append(tok)
     print("...................................................")
 
-print()
 
 # TODO: Construir dataframe pandas para representar a tabela de símbolos, quantificando cada tipo de lexema.
+
+
+
+symbols_table = pd.DataFrame(list(counters.items()), columns=['Token Type', 'Count'])
+print(symbols_table)
 
