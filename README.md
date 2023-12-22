@@ -1,13 +1,17 @@
 # MOSS-OWLC
-MOSS-OWLC(Mossoró Ontology Web Language compiler) is a compiler to OWL(Ontology Web Language) make in compilers class at UFERSA, campus Mossoró/RN
 
-# OLA - OWL Lexycal Analyzer
+> MOSS-OWLC(Mossoró Ontology Web Language compiler) is a compiler to OWL(Ontology Web Language) make in compilers class at UFERSA 2023.2, campus Mossoró/RN
 
-# Como executar?
-1. Certifique-se de ter o python e o pip instalado em sua máquina.
-2. Instale a biblioteca pandas com o seguinte comando
-   > pip install pandas
-3. Navegue até a pasta moss-owlc/ola/src/
-4. Nesse diretório execute:
+## OLA
+
+> OLA(Owl Lexycal Analyzer) is a lexycal analyzer for OWL make in compiler class at UFERSA 2023.2, campus Mossoró/RN,
+
+### Como executar?
+
+1. Certifique-se de ter o python o em sua máquina.
+2. Navegue até a pasta moss-owlc/ola/src/
+3. Nesse diretório execute:
    > python3 ola.py
-5. A saída do programa será exibida no terminal
+4. A saída do programa exibirá no terminal:
+   1. Cada lexema encontrado no código fonte
+   2. Tabela de simbolos contendo o tipo do token e a quantas vezes ele foi encontrado no código
