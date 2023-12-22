@@ -1,6 +1,6 @@
 # MOSS-OWLC
 
-> MOSS-OWLC(Mossoró Ontology Web Language compiler) is a compiler to OWL(Ontology Web Language) make in compilers class at UFERSA 2023.2, campus Mossoró/RN
+> MOSS-OWLC(Mossoró Ontology Web Language Compiler) is a compiler to OWL(Ontology Web Language) make in compilers class at UFERSA 2023.2, campus Mossoró/RN
 
 ## OLA
 
