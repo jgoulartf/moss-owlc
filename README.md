@@ -14,4 +14,4 @@
    > python3 ola.py
 4. A saída do programa exibirá no terminal:
    1. Cada lexema encontrado no código fonte
-   2. Tabela de simbolos contendo o tipo do token e a quantas vezes ele foi encontrado no código
+   2. Tabela de simbolos contendo o tipo do token e quantas vezes ele foi encontrado no código
