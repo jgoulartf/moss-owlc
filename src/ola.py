@@ -4,7 +4,7 @@
     ┗┛┗┛┛┗      ┗┛┗┻┛┗┛  ┗┛┗ ┛┗ ┗┫┗┗┻┗  ┛┗┛┗┗┻┗┗┫┗┗ ┛ 
                                  ┛              ┛     
                                  
-    Script para definição de um analisador léxico de owl manchester syntax utilizando a biblioteca ply.
+    Script para definição de um analisador léxico de owl manchester syntax utilizando a biblioteca ply-lex.
     
     
     By: Arthur Lennon && João Goulart
@@ -109,7 +109,7 @@ def t_error(t):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # Lendo arquivo de teste 
-with open('Pizza_Ontology_in_OWL_Manchester_Syntax.txt') as f:
+with open('../assets/Pizza_Ontology_in_OWL_Manchester_Syntax.txt') as f:
     owl_source = f.read()
 
 owl_source = str(owl_source)
