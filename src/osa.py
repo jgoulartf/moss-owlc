@@ -18,17 +18,55 @@ from ola import tokens
 def p_error(p):
     print("Syntax error in input!")
 
-# Build the parser
-#parser = yacc.yacc()
+def p_primitive_class(p):
+    'primitive_class : KEYWORD CLASS sub_class_of disjoint_classes individuals'
+    p[0]
 
-#while True:
-#   try:
-#       s = raw_input('calc > ')
-#   except EOFError:
-#       break
-#   if not s: continue
-#   result = parser.parse(s)
-#   print(result)
+def p_sub_class_of(p):
+    '''sub_class_of : KEYWORD TWOPOINTS sub_class_expression sub_class_of
+                    | SPECIAL_SYMBOL sub_class_expression sub_class_of
+                    | empty
+    '''
+
+def p_sub_class_expression(p):
+    '''
+        sub_class_expression : PROPERTY KEYWORD CLASS
+                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+                             | empty
+    '''
+
+def p_disjoint_classes(p):
+    '''
+        disjoint_classes : KEYWORD TWOPOINTS CLASS disjoint_classes
+                         | SPECIAL_SYMBOL CLASS
+                         | empty
+    '''
+
+def p_individuals(p):
+    '''
+        individuals : KEYWORD TWOPOINTS INDIVIDUAL individuals
+                    | SPECIAL_SYMBOL INDIVIDUAL
+                    | empty
+    '''
+
+
+
+
+def p_empty(p):
+    'empty :'
+    pass
+
+
+# Build the parser
+parser = yacc.yacc()
+while True:
+   try:
+       s = raw_input('calc > ')
+   except EOFError:
+       break
+   if not s: continue
+   result = parser.parse(s)
+   print(result)
 
 
 
