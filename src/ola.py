@@ -1,12 +1,12 @@
 """
-    ┏┓┓ ┏┓      ┏┓┓ ┏┓   ┓           ┓  ┏┓    ┓       
-    ┃┃┃ ┣┫  ━━  ┃┃┃┃┃┃   ┃ ┏┓┓┏ ┓┏┏┏┓┃  ┣┫┏┓┏┓┃┓┏┓┏┓┏┓ 
-    ┗┛┗┛┛┗      ┗┛┗┻┛┗┛  ┗┛┗ ┛┗ ┗┫┗┗┻┗  ┛┗┛┗┗┻┗┗┫┗┗ ┛ 
-                                 ┛              ┛     
-                                 
+    ┏┓┓ ┏┓      ┏┓┓ ┏┓   ┓           ┓  ┏┓    ┓
+    ┃┃┃ ┣┫  ━━  ┃┃┃┃┃┃   ┃ ┏┓┓┏ ┓┏┏┏┓┃  ┣┫┏┓┏┓┃┓┏┓┏┓┏┓
+    ┗┛┗┛┛┗      ┗┛┗┻┛┗┛  ┗┛┗ ┛┗ ┗┫┗┗┻┗  ┛┗┛┗┗┻┗┗┫┗┗ ┛
+                                 ┛              ┛
+
     Script para definição de um analisador léxico de owl manchester syntax utilizando a biblioteca ply-lex.
-    
-    
+
+
     By: Arthur Lennon && João Goulart
     At: UFERSA - Campus Mossoró - 07/12/2023
     Version: 0.1.0
@@ -26,14 +26,19 @@ tokens = [
     'NOT',
     'AND',
     'OR',
-    'IDENT_CLASS',
-    'IDENT_PROPERTY',
-    'IDENT_KEYWORD',
+    'CLASS',
+    'PROPERTY',
+    'KEYWORD',
     'CARDINALITY',
     'IDENT_LPAREN',
     'LPAREN',
     'RPAREN',
     'TWOPOINTS',
+    'SPECIAL_SYMBOL',
+    'NAMESPACE',
+    'TYPE',
+    'NUMERAL',
+    'INDIVIDUAL'
 ]
 
 t_LPAREN  = r'\('
@@ -76,8 +81,8 @@ def t_TYPE(t):
 def t_NUMERAL(t):
     r'([0-9]+)'
     return t
-    
-    
+
+
 def t_STRING(t):
     r'"([A-z]+)"'
     return t
@@ -93,29 +98,29 @@ def t_NAMESPACE(t):
     return t
 
 
-def t_SPACE(t):
-    r'\s'
-    return t
+#def t_SPACE(t):
+#    r''
+#    return t
 
 
 # Ignorar tabulação e novalinha
-t_ignore = '\t\n'
+t_ignore = ' \t\n'
 
 # Tratamento de erros
 def t_error(t):
     print(f"Caractere não reconhecido: {t.value[0]}")
     t.lexer.skip(1)
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# Lendo arquivo de teste 
+# Lendo arquivo de teste
 with open('../assets/Pizza_Ontology_in_OWL_Manchester_Syntax.txt') as f:
     owl_source = f.read()
 
 owl_source = str(owl_source)
 lexems = []
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Instaciando o lexer e aplicando no codigos fonte OWL MS
 lexer = lex.lex()
@@ -151,18 +156,18 @@ lexer.input(owl_source)
 
 while True:
     tok = lexer.token()
-    
+
     if not tok:
         break
-    
+
     token = tok.type
     symbols_table[token] += 1
     lexems.append(tok)
-    
+
     if tok.type != "SPACE":
         print(f"Lexem: {tok.type}, Value: {tok.value}")
-    
-    
+
+
 print("\n\n\n.........................")
 print("......Symbols table......")
 print(".........................")
