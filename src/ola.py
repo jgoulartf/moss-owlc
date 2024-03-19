@@ -97,11 +97,9 @@ def t_NAMESPACE(t):
     r'([a-z]+)'
     return t
 
-
 #def t_SPACE(t):
 #    r''
 #    return t
-
 
 # Ignorar tabulação e novalinha
 t_ignore = ' \t\n'

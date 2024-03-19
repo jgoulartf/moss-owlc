@@ -20,44 +20,42 @@ from ola import tokens
 def p_error(p):
     print("Syntax error in input!")
 
+def p_primitive_class(p):
+    '''primitive_class : KEYWORD TWOPOINTS CLASS sub_class_of disjoint_classes individuals
+                       | empty
+    '''
+
 #def p_primitive_class(p):
-#    '''primitive_class : KEYWORD TWOPOINTS CLASS sub_class_of disjoint_classes individuals
+#    '''primitive_class : KEYWORD TWOPOINTS CLASS primitive_class
 #                       | empty
 #    '''
 
-def p_primitive_class(p):
-    '''primitive_class : KEYWORD TWOPOINTS CLASS primitive_class
-                       | empty
+def p_sub_class_of(p):
+    '''sub_class_of : KEYWORD TWOPOINTS sub_class_expression sub_class_of
+                    | SPECIAL_SYMBOL sub_class_expression sub_class_of
+                    | empty
     '''
-#
-#
-#
-#def p_sub_class_of(p):
-#    '''sub_class_of : KEYWORD TWOPOINTS sub_class_expression sub_class_of
-#                    | SPECIAL_SYMBOL sub_class_expression sub_class_of
-#                    | empty
-#    '''
-#
-#def p_sub_class_expression(p):
-#    '''
-#        sub_class_expression : PROPERTY KEYWORD CLASS
-#                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
-#                             | empty
-#    '''
-#
-#def p_disjoint_classes(p):
-#    '''
-#        disjoint_classes : KEYWORD TWOPOINTS CLASS disjoint_classes
-#                         | SPECIAL_SYMBOL CLASS
-#                         | empty
-#    '''
-#
-#def p_individuals(p):
-#    '''
-#        individuals : KEYWORD TWOPOINTS INDIVIDUAL individuals
-#                    | SPECIAL_SYMBOL INDIVIDUAL
-#                    | empty
-#    '''
+
+def p_sub_class_expression(p):
+    '''
+        sub_class_expression : PROPERTY KEYWORD CLASS
+                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+                             | empty
+    '''
+
+def p_disjoint_classes(p):
+    '''
+        disjoint_classes : KEYWORD TWOPOINTS CLASS disjoint_classes
+                        | SPECIAL_SYMBOL CLASS
+                        | empty
+    '''
+
+def p_individuals(p):
+    '''
+        individuals : KEYWORD TWOPOINTS INDIVIDUAL individuals
+                    | SPECIAL_SYMBOL INDIVIDUAL
+                    | empty
+    '''
 
 def p_empty(p):
     'empty :'
@@ -65,10 +63,22 @@ def p_empty(p):
 
 owl_input = """
 Class: Pizza
+
+SubClassOf:
+    hasBase some PizzaBase,
+    hasCaloricContent some xsd:integer
+
+DisjointClasses:
+    Pizza, PizzaBase, PizzaTopping
+
+Individuals:
+    CustomPizza1,
+    CustomPizza2
 """
 
 # Build the parser
 parser = ply.yacc.yacc()
+
 #while True:
 #    try:
 #       s = owl_input('calc > ')
@@ -76,5 +86,6 @@ parser = ply.yacc.yacc()
 #       break
 #    if not s: continue
     # Analisar a entrada
+
 result = parser.parse(owl_input)
 print(result)
