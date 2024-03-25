@@ -63,7 +63,7 @@ def t_INDIVIDUAL(t):
 
 
 def t_PROPERTY(t):
-    r'has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z]) | ([a-z]+)\s'
+    r'has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z]) \s'
     return t
 
 
@@ -116,6 +116,24 @@ with open('../assets/Pizza_Ontology_in_OWL_Manchester_Syntax.txt') as f:
     owl_source = f.read()
 
 owl_source = str(owl_source)
+owl_source_2 = """
+Class: Pizza
+
+SubClassOf:
+    hasBase some PizzaBase,
+    hasCaloricContent some xsd:integer
+
+DisjointClasses:
+    Pizza, PizzaBase, PizzaTopping
+
+Individuals:
+    CustomPizza1,
+    CustomPizza2
+"""
+
+owl_input_2 = """Class: Pizza"""
+
+
 lexems = []
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,7 +168,7 @@ print(f"\n\nLENDO CÓDIGO FONTE...")
 print(f"\n\nGERANDO LEXEMAS\n")
 print("...................................................")
 
-lexer.input(owl_source)
+lexer.input(owl_source_2)
 
 while True:
     tok = lexer.token()

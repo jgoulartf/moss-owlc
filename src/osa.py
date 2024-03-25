@@ -13,12 +13,16 @@
 
 import ply.yacc
 from ola import tokens
+from ola import lexems
 
-#start = 'primitive_class'
-
-# Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    print("\nSyntax error in input!\n")
+    print(p)
+    #if p:
+    #    print(f"\nUnexpected \"{p.value}\" at position {p.lexpos} line {p.lineno}\n")
+    #else:
+    #    print("\nUnexpected end of input\n")
+
 
 def p_primitive_class(p):
     '''primitive_class : KEYWORD TWOPOINTS CLASS sub_class_of disjoint_classes individuals
@@ -26,28 +30,36 @@ def p_primitive_class(p):
     '''
 
 #def p_primitive_class(p):
-#    '''primitive_class : KEYWORD TWOPOINTS CLASS primitive_class
+#    '''primitive_class : KEYWORD TWOPOINTS CLASS
 #                       | empty
 #    '''
 
+# Volta pra cá e bate no keyword...
 def p_sub_class_of(p):
-    '''sub_class_of : KEYWORD TWOPOINTS sub_class_expression sub_class_of
-                    | SPECIAL_SYMBOL sub_class_expression sub_class_of
+    '''sub_class_of : KEYWORD TWOPOINTS sub_class_expression sub_class_of_optional
                     | empty
     '''
 
+def p_sub_class_of_optional(p):
+    '''sub_class_of_optional : sub_class_expression sub_class_of
+                              | disjoint_classes
+                              | empty
+    '''
+
+
+#| PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
 def p_sub_class_expression(p):
     '''
-        sub_class_expression : PROPERTY KEYWORD CLASS
-                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+        sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression
+                             | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
                              | empty
     '''
 
 def p_disjoint_classes(p):
     '''
         disjoint_classes : KEYWORD TWOPOINTS CLASS disjoint_classes
-                        | SPECIAL_SYMBOL CLASS
-                        | empty
+                         | SPECIAL_SYMBOL CLASS disjoint_classes
+                         | empty
     '''
 
 def p_individuals(p):
@@ -69,12 +81,15 @@ SubClassOf:
     hasCaloricContent some xsd:integer
 
 DisjointClasses:
-    Pizza, PizzaBase, PizzaTopping
+    Pizza
 
 Individuals:
     CustomPizza1,
     CustomPizza2
 """
+
+owl_input_2 = """Class: Pizza"""
+
 
 # Build the parser
 parser = ply.yacc.yacc()
@@ -88,4 +103,6 @@ parser = ply.yacc.yacc()
     # Analisar a entrada
 
 result = parser.parse(owl_input)
-print(result)
+
+if(result is None):
+    print("syntactic analysis completed")
