@@ -55,6 +55,20 @@ def p_sub_class_expression(p):
                              | empty
     '''
 
+# def p_closure_class(p):
+#     '''
+#         closure_class   : CLASS closure_subclass_of
+#                         | empty
+#     '''
+
+# def p_closure_subclass_of(p):
+#     '''
+#         closure_subclass_of : CLASS SPECIAL_SYMBOL closure_subclass_of
+#                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
+#                             | empty
+#     '''
+
+
 def p_disjoint_classes(p):
     '''
         disjoint_classes : KEYWORD TWOPOINTS CLASS disjoint_classes
