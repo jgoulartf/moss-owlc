@@ -29,6 +29,11 @@ tokens = [
     'CLASS',
     'PROPERTY',
     'KEYWORD',
+    'KEYWORD_CLASS',
+    'KEYWORD_EQUIVALENTTO',
+    'KEYWORD_INDIVIDUALS',
+    'KEYWORD_SUBCLASSOF',
+    'KEYWORD_DISJOINT',
     'CARDINALITY',
     'IDENT_LPAREN',
     'LPAREN',
@@ -46,11 +51,29 @@ t_RPAREN  = r'\)'
 t_TWOPOINTS  = r':'
 
 def t_KEYWORD(t):
-    r'Class | EquivalentTo | Individuals | SubClassOf | DisjointClasses | \
-    SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY \
+    r' SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY \
     | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
     return t
 
+def t_KEYWORD_CLASS(t):
+    r'Class'
+    return t
+
+def t_KEYWORD_EQUIVALENTTO(t):
+    r'EquivalentTo'
+    return t
+
+def t_KEYWORD_INDIVIDUALS(t):
+    r'Individuals'
+    return t
+
+def t_KEYWORD_SUBCLASSOF(t):
+    r'SubClassOf'
+    return t
+
+def t_KEYWORD_DISJOINT(t):
+    r'DisjointClasses'
+    return t
 
 def t_CLASS(t):
     r'[A-Z][a-zA-Z]*(?![a-zA-Z0-9_])'
@@ -148,6 +171,11 @@ print("..........................")
 # Dicionário para a tabela de símbolos
 symbols_table = {
     "KEYWORD": 0,
+    "KEYWORD_CLASS": 0,
+    "KEYWORD_EQUIVALENTTO": 0,
+    "KEYWORD_INDIVIDUALS": 0,
+    "KEYWORD_SUBCLASSOF": 0,
+    "KEYWORD_DISJOINT": 0,
     "CLASS": 0,
     "INDIVIDUAL": 0,
     "PROPERTY": 0,

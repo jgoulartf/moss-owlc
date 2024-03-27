@@ -25,9 +25,10 @@ def p_error(p):
 
 
 def p_primitive_class(p):
-    '''primitive_class : KEYWORD TWOPOINTS CLASS sub_class_of disjoint_classes individuals
+    '''primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals
                        | empty
     '''
+    print("P primitive class", p)
 
 #def p_primitive_class(p):
 #    '''primitive_class : KEYWORD TWOPOINTS CLASS
@@ -36,24 +37,28 @@ def p_primitive_class(p):
 
 # Volta pra cá e bate no keyword...
 def p_sub_class_of(p):
-    '''sub_class_of : KEYWORD TWOPOINTS sub_class_expression sub_class_of_optional
+    '''sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional
                     | empty
     '''
+    print("P sub_class_of", p)
 
 def p_sub_class_of_optional(p):
-    '''sub_class_of_optional : sub_class_expression sub_class_of
+    '''sub_class_of_optional  : sub_class_expression sub_class_of
                               | disjoint_classes
                               | empty
     '''
+    print("P p_sub_class_of_optional", p)
 
 
-#| PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+# PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+# 
 def p_sub_class_expression(p):
     '''
         sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression
                              | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
                              | empty
     '''
+    print("P p_sub_class_expression", p)
 
 # def p_closure_class(p):
 #     '''
@@ -71,21 +76,26 @@ def p_sub_class_expression(p):
 
 def p_disjoint_classes(p):
     '''
-        disjoint_classes : KEYWORD TWOPOINTS CLASS disjoint_classes
+        disjoint_classes : KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes
                          | SPECIAL_SYMBOL CLASS disjoint_classes
                          | empty
     '''
+    print("P p_sub_class_expression", p)
+
 
 def p_individuals(p):
     '''
-        individuals : KEYWORD TWOPOINTS INDIVIDUAL individuals
+        individuals : KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals
                     | SPECIAL_SYMBOL INDIVIDUAL
                     | empty
     '''
+    print("P p_individuals", p)
+
 
 def p_empty(p):
     'empty :'
     pass
+
 
 owl_input = """
 Class: Pizza
@@ -95,7 +105,7 @@ SubClassOf:
     hasCaloricContent some xsd:integer
 
 DisjointClasses:
-    Pizza
+    Pizza, PizzaBase, PizzaTopping
 
 Individuals:
     CustomPizza1,
