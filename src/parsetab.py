@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ALL AND CARDINALITY CLASS EXACTLY IDENT_LPAREN INDIVIDUAL KEYWORD KEYWORD_CLASS KEYWORD_DISJOINT KEYWORD_EQUIVALENTTO KEYWORD_INDIVIDUALS KEYWORD_SUBCLASSOF LPAREN MAX MIN NAMESPACE NOT NUMERAL OR PROPERTY RPAREN SOME SPECIAL_SYMBOL THAT TWOPOINTS TYPE VALUEprimitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals\n                       | empty\n    sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional\n                    | empty\n    sub_class_of_optional  : sub_class_expression sub_class_of\n                              | disjoint_classes\n                              | empty\n    \n        sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression\n                             | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression\n                             | empty\n    \n        disjoint_classes : KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes\n                         | SPECIAL_SYMBOL CLASS disjoint_classes\n                         | empty\n    \n        individuals : KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals\n                    | SPECIAL_SYMBOL INDIVIDUAL\n                    | empty\n    \n        sub_class_of_closure : CLASS closure_subclass_of\n                             | empty\n    \n        closure_subclass_of : CLASS SPECIAL_SYMBOL closure_subclass_of\n                             | property_expression SPECIAL_SYMBOL closure_subclass_of\n                             | empty\n    \n        property_expression  : PROPERTY KEYWORD CLASS\n                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL\n                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL\n                             | empty\n    empty :'
+_lr_signature = 'ALL AND CARDINALITY CLASS EXACTLY IDENT_LPAREN INDIVIDUAL KEYWORD KEYWORD_CLASS KEYWORD_DISJOINT KEYWORD_EQUIVALENTTO KEYWORD_INDIVIDUALS KEYWORD_SUBCLASSOF LCOLCH LPAREN MAX MIN NAMESPACE NOT NUMERAL OR PROPERTY RCOLCH RPAREN SOME SPECIAL_SYMBOL THAT TWOPOINTS TYPE VALUES : primitive_class\n            | defined_class\n            | empty\n    primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals primitive_class\n                       | empty\n    defined_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals defined_class\n                    | empty\n   \n        sub_class_of_closure : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of\n                             | empty\n    \n        property_expression  : PROPERTY KEYWORD CLASS\n                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL\n                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL\n                             | property_expression_closure\n                             | empty\n    \n        property_expression_closure : PROPERTY KEYWORD LPAREN CLASS property_expression_closure\n                                    | KEYWORD CLASS property_expression_closure\n                                    | KEYWORD CLASS RPAREN\n                                    | empty\n    sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional\n                    | KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of\n                    | property_expression SPECIAL_SYMBOL sub_class_of\n                    | empty\n    sub_class_of_optional  : sub_class_expression sub_class_of\n                              | disjoint_classes\n                              | empty\n    \n        sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression\n                             | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression\n                             | empty\n    \n        disjoint_classes : KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes\n                         | SPECIAL_SYMBOL CLASS disjoint_classes\n                         | empty\n    \n        individuals : KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals\n                    | SPECIAL_SYMBOL INDIVIDUAL\n                    | empty\n    \n        equivalent_to : KEYWORD_EQUIVALENTTO TWOPOINTS equivalent_to_expression\n                      | empty\n    \n       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN\n                                | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN\n                                | empty\n\n\n\n\n   \n        class_or    : CLASS KEYWORD class_or\n                    | CLASS class_or\n                    | KEYWORD CLASS\n                    | empty\n    empty :'
     
-_lr_action_items = {'KEYWORD_CLASS':([0,],[2,]),'$end':([0,1,3,5,6,8,9,12,13,14,17,19,20,23,25,26,27,28,29,30,31,35,36,37,38,40,41,44,45,],[-26,0,-2,-26,-26,-4,-26,-13,-26,-1,-16,-26,-26,-10,-15,-26,-12,-26,-3,-6,-7,-26,-11,-5,-26,-14,-8,-26,-9,]),'TWOPOINTS':([2,7,10,15,42,],[4,13,18,24,43,]),'CLASS':([4,11,18,32,33,],[5,19,26,19,38,]),'KEYWORD_SUBCLASSOF':([5,13,20,23,28,31,38,41,44,45,],[7,-26,-26,-10,7,-10,-26,-8,-26,-9,]),'KEYWORD_DISJOINT':([5,6,8,12,13,19,20,23,26,27,28,29,30,31,36,37,38,41,44,45,],[-26,10,-4,-13,-26,10,10,-10,10,-12,-26,-3,-6,-7,-11,-5,-26,-8,-26,-9,]),'SPECIAL_SYMBOL':([5,6,8,9,12,13,19,20,23,26,27,28,29,30,31,35,36,37,38,41,44,45,],[-26,11,-4,16,-13,22,11,32,-10,11,-12,-26,-3,-6,-7,16,-11,-5,22,-8,22,-9,]),'KEYWORD_INDIVIDUALS':([5,6,8,9,12,13,19,20,23,26,27,28,29,30,31,35,36,37,38,41,44,45,],[-26,-26,-4,15,-13,-26,-26,-26,-10,-26,-12,-26,-3,-6,-7,15,-11,-5,-26,-8,-26,-9,]),'PROPERTY':([13,20,22,23,32,38,41,44,45,],[21,21,34,-10,34,21,-8,21,-9,]),'INDIVIDUAL':([16,24,],[25,35,]),'KEYWORD':([21,34,],[33,39,]),'NAMESPACE':([39,],[42,]),'TYPE':([43,],[44,]),}
+_lr_action_items = {'KEYWORD_CLASS':([0,7,8,9,12,17,20,21,24,25,26,27,30,32,37,38,42,43,44,45,47,58,59,61,62,63,64,65,67,75,76,77,78,79,81,85,86,88,95,100,101,110,],[5,-44,-44,-44,-22,-44,-31,33,-34,-44,-44,-44,55,-44,-33,-44,-28,-21,-22,-35,-39,-44,-30,-44,-44,-19,-24,-25,-44,-29,-44,-32,-23,-20,-44,-44,-36,-26,-44,-27,-38,-37,]),'$end':([0,1,2,3,4,7,8,9,12,17,20,21,24,25,26,27,30,32,34,35,37,38,42,43,44,45,47,56,57,58,59,61,62,63,64,65,67,75,76,77,78,79,81,85,86,88,95,100,101,110,],[-44,0,-1,-2,-3,-44,-44,-44,-22,-44,-31,-44,-34,-44,-44,-44,-44,-44,-6,-7,-33,-44,-28,-21,-22,-35,-39,-4,-5,-44,-30,-44,-44,-19,-24,-25,-44,-29,-44,-32,-23,-20,-44,-44,-36,-26,-44,-27,-38,-37,]),'TWOPOINTS':([5,10,13,18,22,33,49,55,87,97,],[6,25,27,31,36,60,71,74,91,102,]),'CLASS':([6,15,19,25,27,28,31,50,60,66,69,74,92,],[7,29,32,39,46,48,58,72,76,32,81,85,96,]),'KEYWORD_SUBCLASSOF':([7,25,26,38,42,62,65,67,81,85,88,95,100,],[10,-44,10,-44,-28,10,-28,10,-44,10,-26,-44,-27,]),'KEYWORD_EQUIVALENTTO':([7,76,],[13,13,]),'PROPERTY':([7,25,26,29,38,40,42,62,65,66,67,72,81,82,85,88,95,100,],[14,41,14,53,41,68,-28,14,-28,68,14,53,41,89,14,-26,41,-27,]),'KEYWORD_DISJOINT':([7,8,12,20,25,26,32,38,42,43,44,58,59,62,63,64,65,67,75,78,79,81,85,88,95,100,],[-44,18,-22,-31,-44,-44,18,18,-28,-21,-22,18,-30,-44,-19,-24,-25,-44,-29,-23,-20,-44,-44,-26,-44,-27,]),'SPECIAL_SYMBOL':([7,8,9,11,12,16,17,20,25,26,27,29,32,38,39,42,43,44,45,47,48,51,52,54,58,59,61,62,63,64,65,67,72,75,76,78,79,81,83,84,85,86,88,90,94,95,98,99,100,101,103,105,106,110,],[-44,19,23,26,-14,-13,23,-31,40,-44,-44,-44,19,66,67,-28,-21,-14,-35,-39,-10,-16,-17,-18,19,-30,23,-44,-19,-24,-25,-44,-44,-29,-44,-23,-20,40,90,-15,-44,-36,-26,93,99,40,103,-12,-27,-38,-11,106,107,-37,]),'KEYWORD_INDIVIDUALS':([7,8,9,12,17,20,25,26,27,32,38,42,43,44,45,47,58,59,61,62,63,64,65,67,75,76,78,79,81,85,86,88,95,100,101,110,],[-44,-44,22,-22,22,-31,-44,-44,-44,-44,-44,-28,-21,-22,-35,-39,-44,-30,22,-44,-19,-24,-25,-44,-29,-44,-23,-20,-44,-44,-36,-26,-44,-27,-38,-37,]),'KEYWORD':([7,14,25,26,29,38,41,42,46,53,62,65,67,68,72,81,85,88,89,95,100,],[15,28,-44,15,15,-44,69,-28,70,73,15,-28,15,80,15,-44,15,-26,92,-44,-27,]),'INDIVIDUAL':([23,36,],[37,61,]),'NAMESPACE':([28,80,92,],[49,87,97,]),'LPAREN':([28,70,73,],[50,82,50,]),'RPAREN':([29,96,109,],[52,101,110,]),'TYPE':([71,91,102,],[83,95,104,]),'NUMERAL':([90,93,107,],[94,98,108,]),'LCOLCH':([104,],[105,]),'RCOLCH':([108,],[109,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'primitive_class':([0,],[1,]),'empty':([0,5,6,9,13,19,20,26,28,35,38,44,],[3,8,12,17,23,12,31,12,8,17,23,23,]),'sub_class_of':([5,28,],[6,37,]),'disjoint_classes':([6,19,20,26,],[9,27,30,36,]),'individuals':([9,35,],[14,40,]),'sub_class_expression':([13,20,38,44,],[20,28,41,45,]),'sub_class_of_optional':([20,],[29,]),}
+_lr_goto_items = {'S':([0,],[1,]),'primitive_class':([0,30,],[2,56,]),'defined_class':([0,21,],[3,34,]),'empty':([0,7,8,9,17,21,25,26,27,29,30,32,38,58,61,62,67,72,76,81,85,95,],[4,12,20,24,24,35,42,44,47,54,57,20,65,20,24,44,44,54,86,42,44,42,]),'sub_class_of':([7,26,62,67,85,],[8,43,78,79,8,]),'equivalent_to':([7,76,],[9,9,]),'property_expression':([7,26,62,67,85,],[11,11,11,11,11,]),'property_expression_closure':([7,26,29,62,67,72,85,],[16,16,51,16,16,84,16,]),'disjoint_classes':([8,32,38,58,],[17,59,64,75,]),'individuals':([9,17,61,],[21,30,77,]),'sub_class_expression':([25,38,81,95,],[38,62,88,100,]),'equivalent_to_expression':([27,],[45,]),'sub_class_of_optional':([38,],[63,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,31 +26,49 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> primitive_class","S'",1,None,None,None),
-  ('primitive_class -> KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals','primitive_class',6,'p_primitive_class','osa_2.py',16),
-  ('primitive_class -> empty','primitive_class',1,'p_primitive_class','osa_2.py',17),
-  ('sub_class_of -> KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional','sub_class_of',4,'p_sub_class_of','osa_2.py',58),
-  ('sub_class_of -> empty','sub_class_of',1,'p_sub_class_of','osa_2.py',59),
-  ('sub_class_of_optional -> sub_class_expression sub_class_of','sub_class_of_optional',2,'p_sub_class_of_optional','osa_2.py',64),
-  ('sub_class_of_optional -> disjoint_classes','sub_class_of_optional',1,'p_sub_class_of_optional','osa_2.py',65),
-  ('sub_class_of_optional -> empty','sub_class_of_optional',1,'p_sub_class_of_optional','osa_2.py',66),
-  ('sub_class_expression -> PROPERTY KEYWORD CLASS sub_class_expression','sub_class_expression',4,'p_sub_class_expression','osa_2.py',74),
-  ('sub_class_expression -> SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression','sub_class_expression',7,'p_sub_class_expression','osa_2.py',75),
-  ('sub_class_expression -> empty','sub_class_expression',1,'p_sub_class_expression','osa_2.py',76),
-  ('disjoint_classes -> KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes','disjoint_classes',4,'p_disjoint_classes','osa_2.py',84),
-  ('disjoint_classes -> SPECIAL_SYMBOL CLASS disjoint_classes','disjoint_classes',3,'p_disjoint_classes','osa_2.py',85),
-  ('disjoint_classes -> empty','disjoint_classes',1,'p_disjoint_classes','osa_2.py',86),
-  ('individuals -> KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals','individuals',4,'p_individuals','osa_2.py',92),
-  ('individuals -> SPECIAL_SYMBOL INDIVIDUAL','individuals',2,'p_individuals','osa_2.py',93),
-  ('individuals -> empty','individuals',1,'p_individuals','osa_2.py',94),
-  ('sub_class_of_closure -> CLASS closure_subclass_of','sub_class_of_closure',2,'p_closure_class','osa_2.py',130),
-  ('sub_class_of_closure -> empty','sub_class_of_closure',1,'p_closure_class','osa_2.py',131),
-  ('closure_subclass_of -> CLASS SPECIAL_SYMBOL closure_subclass_of','closure_subclass_of',3,'p_closure_subclass_of','osa_2.py',138),
-  ('closure_subclass_of -> property_expression SPECIAL_SYMBOL closure_subclass_of','closure_subclass_of',3,'p_closure_subclass_of','osa_2.py',139),
-  ('closure_subclass_of -> empty','closure_subclass_of',1,'p_closure_subclass_of','osa_2.py',140),
-  ('property_expression -> PROPERTY KEYWORD CLASS','property_expression',3,'p_property_expression','osa_2.py',152),
-  ('property_expression -> PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL','property_expression',9,'p_property_expression','osa_2.py',153),
-  ('property_expression -> PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL','property_expression',8,'p_property_expression','osa_2.py',154),
-  ('property_expression -> empty','property_expression',1,'p_property_expression','osa_2.py',155),
-  ('empty -> <empty>','empty',0,'p_empty','osa_2.py',162),
+  ("S' -> S","S'",1,None,None,None),
+  ('S -> primitive_class','S',1,'p_start','osa_2.py',15),
+  ('S -> defined_class','S',1,'p_start','osa_2.py',16),
+  ('S -> empty','S',1,'p_start','osa_2.py',17),
+  ('primitive_class -> KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals primitive_class','primitive_class',7,'p_primitive_class','osa_2.py',24),
+  ('primitive_class -> empty','primitive_class',1,'p_primitive_class','osa_2.py',25),
+  ('defined_class -> KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals defined_class','defined_class',6,'p_defined_class','osa_2.py',31),
+  ('defined_class -> empty','defined_class',1,'p_defined_class','osa_2.py',32),
+  ('sub_class_of_closure -> KEYWORD_CLASS TWOPOINTS CLASS sub_class_of','sub_class_of_closure',4,'p_closure_class','osa_2.py',39),
+  ('sub_class_of_closure -> empty','sub_class_of_closure',1,'p_closure_class','osa_2.py',40),
+  ('property_expression -> PROPERTY KEYWORD CLASS','property_expression',3,'p_property_expression','osa_2.py',56),
+  ('property_expression -> PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL','property_expression',9,'p_property_expression','osa_2.py',57),
+  ('property_expression -> PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL','property_expression',8,'p_property_expression','osa_2.py',58),
+  ('property_expression -> property_expression_closure','property_expression',1,'p_property_expression','osa_2.py',59),
+  ('property_expression -> empty','property_expression',1,'p_property_expression','osa_2.py',60),
+  ('property_expression_closure -> PROPERTY KEYWORD LPAREN CLASS property_expression_closure','property_expression_closure',5,'p_property_expression_closure','osa_2.py',66),
+  ('property_expression_closure -> KEYWORD CLASS property_expression_closure','property_expression_closure',3,'p_property_expression_closure','osa_2.py',67),
+  ('property_expression_closure -> KEYWORD CLASS RPAREN','property_expression_closure',3,'p_property_expression_closure','osa_2.py',68),
+  ('property_expression_closure -> empty','property_expression_closure',1,'p_property_expression_closure','osa_2.py',69),
+  ('sub_class_of -> KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional','sub_class_of',4,'p_sub_class_of','osa_2.py',106),
+  ('sub_class_of -> KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of','sub_class_of',5,'p_sub_class_of','osa_2.py',107),
+  ('sub_class_of -> property_expression SPECIAL_SYMBOL sub_class_of','sub_class_of',3,'p_sub_class_of','osa_2.py',108),
+  ('sub_class_of -> empty','sub_class_of',1,'p_sub_class_of','osa_2.py',109),
+  ('sub_class_of_optional -> sub_class_expression sub_class_of','sub_class_of_optional',2,'p_sub_class_of_optional','osa_2.py',114),
+  ('sub_class_of_optional -> disjoint_classes','sub_class_of_optional',1,'p_sub_class_of_optional','osa_2.py',115),
+  ('sub_class_of_optional -> empty','sub_class_of_optional',1,'p_sub_class_of_optional','osa_2.py',116),
+  ('sub_class_expression -> PROPERTY KEYWORD CLASS sub_class_expression','sub_class_expression',4,'p_sub_class_expression','osa_2.py',124),
+  ('sub_class_expression -> SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression','sub_class_expression',7,'p_sub_class_expression','osa_2.py',125),
+  ('sub_class_expression -> empty','sub_class_expression',1,'p_sub_class_expression','osa_2.py',126),
+  ('disjoint_classes -> KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes','disjoint_classes',4,'p_disjoint_classes','osa_2.py',134),
+  ('disjoint_classes -> SPECIAL_SYMBOL CLASS disjoint_classes','disjoint_classes',3,'p_disjoint_classes','osa_2.py',135),
+  ('disjoint_classes -> empty','disjoint_classes',1,'p_disjoint_classes','osa_2.py',136),
+  ('individuals -> KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals','individuals',4,'p_individuals','osa_2.py',142),
+  ('individuals -> SPECIAL_SYMBOL INDIVIDUAL','individuals',2,'p_individuals','osa_2.py',143),
+  ('individuals -> empty','individuals',1,'p_individuals','osa_2.py',144),
+  ('equivalent_to -> KEYWORD_EQUIVALENTTO TWOPOINTS equivalent_to_expression','equivalent_to',3,'p_equivalent_to','osa_2.py',151),
+  ('equivalent_to -> empty','equivalent_to',1,'p_equivalent_to','osa_2.py',152),
+  ('equivalent_to_expression -> CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN','equivalent_to_expression',14,'p_equivalent_to_expression','osa_2.py',159),
+  ('equivalent_to_expression -> CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN','equivalent_to_expression',7,'p_equivalent_to_expression','osa_2.py',160),
+  ('equivalent_to_expression -> empty','equivalent_to_expression',1,'p_equivalent_to_expression','osa_2.py',161),
+  ('class_or -> CLASS KEYWORD class_or','class_or',3,'p_class_or','osa_2.py',183),
+  ('class_or -> CLASS class_or','class_or',2,'p_class_or','osa_2.py',184),
+  ('class_or -> KEYWORD CLASS','class_or',2,'p_class_or','osa_2.py',185),
+  ('class_or -> empty','class_or',1,'p_class_or','osa_2.py',186),
+  ('empty -> <empty>','empty',0,'p_empty','osa_2.py',194),
 ]
