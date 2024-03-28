@@ -15,6 +15,8 @@ def p_error(p):
 def p_start(p):
     '''S : primitive_class
             | defined_class
+            | closure_class
+            | nested_class
             | empty
     '''
     print("Classe primitiva:", p)
@@ -37,10 +39,18 @@ def p_defined_class(p):
 # Função para representar uma expressão de subclasse para axioma de fechamento
 def p_closure_class(p):
     '''
-        sub_class_of_closure : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of
-                             | empty
+        closure_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of
+                      | empty
     '''
     print("Classe para axioma de fechamento:", p)
+
+def p_nested_class(p):
+    '''
+        nested_class  : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+                      | empty
+    '''
+    print("Classe para axioma de fechamento:", p)
+
 
 # Função para representar uma expressão de subclasse para axioma de fechamento
 #def p_closure_subclass_of(p):
@@ -54,19 +64,20 @@ def p_closure_class(p):
 #| SPECIAL_SYMBOL CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
 def p_property_expression(p):
     '''
-        property_expression  : PROPERTY KEYWORD CLASS
+        property_expression  : PROPERTY KEYWORD CLASS SPECIAL_SYMBOL property_expression
+                             | PROPERTY KEYWORD property_expression_closure
                              | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
                              | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
-                             | property_expression_closure
+
                              | empty
     '''
     print("Subclasse de para expressão de propriedade", p)
 
 def p_property_expression_closure(p):
     '''
-        property_expression_closure : PROPERTY KEYWORD LPAREN CLASS property_expression_closure
+        property_expression_closure : LPAREN CLASS property_expression_closure
                                     | KEYWORD CLASS property_expression_closure
-                                    | KEYWORD CLASS RPAREN
+                                    | KEYWORD CLASS RPAREN property_expression
                                     | empty
     '''
 
@@ -107,6 +118,7 @@ def p_sub_class_of(p):
     '''sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional
                     | KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of
                     | property_expression SPECIAL_SYMBOL sub_class_of
+                    | KEYWORD_SUBCLASSOF CLASS SPECIAL_SYMBOL
                     | empty
     '''
     print("P sub_class_of", p)
@@ -157,10 +169,11 @@ def p_equivalent_to(p):
 # Função para representar uma expressão equivalente
 def p_equivalent_to_expression(p):
    '''
-       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN 
+       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
                                 | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN
                                 | equivalent_to_enumerated_expression
-                                | equivalent_to_covered_expression
+
+                                | equivalent_to_nested_expression
                                 | empty
    '''
    print("Expressão equivalente:", p)
@@ -172,15 +185,17 @@ def p_equivalent_to_enumerated_expression(p):
                                             | INSTANCE RKEY
                                             | empty
    '''
-   print("Expressão equivalente:", p)   
+   print("Expressão equivalente:", p)
 
 def p_equivalent_to_covered_expression(p):
-   '''
-       equivalent_to_covered_expression : INSTANCE SPECIAL_SYMBOL
-                                        | INSTANCE                        
-                                        | empty
-   '''
-   print("Expressão equivalente:", p)   
+    '''
+        equivalent_to_nested_expression : CLASS KEYWORD equivalent_to_nested_expression
+                                        | KEYWORD LPAREN PROPERTY KEYWORD equivalent_to_nested_expression
+                                        | LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_nested_expression
+                                        |
+    '''
+    print("Expressão equivalente:", p)
+
 
 # Função para representar uma expressão de subclasse opcional
 # def p_sub_class_of_optional(p):
