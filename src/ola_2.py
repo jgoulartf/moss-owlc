@@ -24,6 +24,8 @@ tokens = [
     'IDENT_LPAREN',
     'LPAREN',
     'RPAREN',
+    'LCOLCH',
+    'RCOLCH',
     'TWOPOINTS',
     'SPECIAL_SYMBOL',
     'NAMESPACE',
@@ -34,6 +36,9 @@ tokens = [
 
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
+t_LCOLCH  = r'\['
+t_RCOLCH  = r'\]'
+
 t_TWOPOINTS  = r':'
 
 def t_KEYWORD(t):
@@ -91,7 +96,7 @@ def t_STRING(t):
     return t
 
 def t_SPECIAL_SYMBOL(t):
-    r'\[ | \] | { | } | < | > | = | == | \,'
+    r'{ | } | < | > | = | == | \,'
     return t
 
 def t_NAMESPACE(t):
@@ -127,7 +132,11 @@ def parse_owl_input(input_text):
     print("...................................................")
 
     while True:
-        tok = lexer.token()
+        try:
+            tok = lexer.token()
+        except:
+            break
+
 
         if not tok:
             break

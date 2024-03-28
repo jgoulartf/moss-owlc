@@ -5,7 +5,7 @@ SubClassOf:
     hasCaloricContent some xsd:integer
 
 DisjointClasses:
-    Pizza, PizzaBase, PizzaTopping!
+    Pizza, PizzaBase, PizzaTopping
 
 Individuals:
     CustomPizza1,

@@ -11,6 +11,14 @@ def p_error(p):
     print("\nErro de sintaxe na entrada!\n")
     print(p)
 
+def p_start(p):
+    '''S : primitive_class 
+            | defined_class
+            | empty
+    '''
+    print("Classe primitiva:", p)
+
+
 # Função para representar uma classe primitiva
 def p_primitive_class(p):
     '''primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals
@@ -19,11 +27,11 @@ def p_primitive_class(p):
     print("Classe primitiva:", p)
 
 # Função para representar uma classe definida
-#def p_defined_class(p):
-#    '''defined_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
-#                     | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-#    '''
-#    print("Classe definida:", p)
+def p_defined_class(p):
+   '''defined_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
+                    | empty
+   '''
+   print("Classe definida:", p)
 
 # Função para representar uma classe com axioma de fechamento
 #def p_closure_axiom_class(p):
@@ -96,28 +104,30 @@ def p_individuals(p):
     print("P p_individuals", p)
 
 # Função para representar uma expressão equivalente
-#def p_equivalent_to(p):
-#    '''
-#        equivalent_to : KEYWORD_EQUIVALENTTO TWOPOINTS CLASS equivalent_to_expression
-#                      | empty
-#    '''
-#    print("Equivalente a:", p)
+def p_equivalent_to(p):
+    '''
+        equivalent_to : KEYWORD_EQUIVALENTTO TWOPOINTS equivalent_to_expression
+                      | empty
+    '''
+    print("Equivalente a:", p)
 
+#| SPECIAL_SYMBOL CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN                                  
+#| SPECIAL_SYMBOL CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
 # Função para representar uma expressão equivalente
-#def p_equivalent_to_expression(p):
-#    '''
-#        equivalent_to_expression : equivalent_to_expression AND equivalent_to_expression
-#                                 | equivalent_to_expression OR equivalent_to_expression
-#                                 | PROPERTY SOME CLASS
-#                                 | PROPERTY KEYWORD CLASS
-#                                 | PROPERTY VALUE SPECIAL_SYMBOL
-#                                 | SPECIAL_SYMBOL
-#                                 | CLASS
-#    '''
-#    print("Expressão equivalente:", p)
+def p_equivalent_to_expression(p):
+   '''
+       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
+                                | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN
+                                | empty
+                                
+                                
+                                
+                                 
+   '''
+   print("Expressão equivalente:", p)
 
 # Função para representar uma expressão de subclasse opcional
-#def p_sub_class_of_optional(p):
+# def p_sub_class_of_optional(p):
 #    '''sub_class_of_optional  : sub_class_expression sub_class_of
 #                              | disjoint_classes
 #                              | empty
@@ -206,6 +216,7 @@ def handle_user_choice(choice):
 
     elif choice == '2':
         print("Analisando classe definida...")
+        lexer_parser(read_file("../assets/classe_definida.txt"))
         parse_owl_input(read_file('../assets/classe_definida.txt'))
 
     elif choice == '3':
