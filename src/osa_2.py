@@ -88,23 +88,19 @@ def p_nested_descriptions_class(p):
     '''
     print("Classe com descrições aninhadas:", p)
 
-
-
-
-
 # Função para representar uma classe enumerada
-#def p_enumerated_class(p):
-#    '''enumerated_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
-#                        | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-#    '''
-#    print("Classe enumerada:", p)
+def p_enumerated_class(p):
+   '''enumerated_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
+                       | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+   '''
+   print("Classe enumerada:", p)
 
 # Função para representar uma classe coberta
-#def p_covered_class(p):
-#    '''covered_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
-#                     | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-#    '''
-#    print("Classe coberta:", p)
+def p_covered_class(p):
+   '''covered_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
+                    | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+   '''
+   print("Classe coberta:", p)
 
 # Função para representar a relação de subclasse
 def p_sub_class_of(p):
@@ -161,15 +157,30 @@ def p_equivalent_to(p):
 # Função para representar uma expressão equivalente
 def p_equivalent_to_expression(p):
    '''
-       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
+       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN 
                                 | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN
+                                | equivalent_to_enumerated_expression
+                                | equivalent_to_covered_expression
                                 | empty
-
-
-
-
    '''
    print("Expressão equivalente:", p)
+
+def p_equivalent_to_enumerated_expression(p):
+   '''
+       equivalent_to_enumerated_expression  : LKEY INSTANCE SPECIAL_SYMBOL
+                                            | INSTANCE SPECIAL_SYMBOL
+                                            | INSTANCE RKEY
+                                            | empty
+   '''
+   print("Expressão equivalente:", p)   
+
+def p_equivalent_to_covered_expression(p):
+   '''
+       equivalent_to_covered_expression : INSTANCE SPECIAL_SYMBOL
+                                        | INSTANCE                        
+                                        | empty
+   '''
+   print("Expressão equivalente:", p)   
 
 # Função para representar uma expressão de subclasse opcional
 # def p_sub_class_of_optional(p):
@@ -178,10 +189,6 @@ def p_equivalent_to_expression(p):
 #                              | empty
 #    '''
 #    print("Subclasse de (opcional):", p)
-
-
-
-
 
 def p_class_or(p):
     '''

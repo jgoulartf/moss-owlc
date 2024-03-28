@@ -26,18 +26,23 @@ tokens = [
     'RPAREN',
     'LCOLCH',
     'RCOLCH',
+    'LKEY',
+    'RKEY',
     'TWOPOINTS',
     'SPECIAL_SYMBOL',
     'NAMESPACE',
     'TYPE',
     'NUMERAL',
-    'INDIVIDUAL'
+    'INDIVIDUAL',
+    'INSTANCE'
 ]
 
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_LCOLCH  = r'\['
 t_RCOLCH  = r'\]'
+t_LKEY = r'\{'
+t_RKEY = r'\}'
 
 t_TWOPOINTS  = r':'
 
