@@ -60,7 +60,7 @@ Para executar o MOSS-OWLC e o OSA, siga estes passos:
 
 6. Execute o analisador sintático:
    ```bash
-   python3 sintatico.py
+   python3 osa_2.py
    ```
 
 ## Uso
