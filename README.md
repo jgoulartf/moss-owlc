@@ -4,24 +4,31 @@
 
 O MOSS-OWLC é um compilador para OWL (Ontology Web Language) desenvolvido como um projeto para a disciplina de compiladores na UFERSA (Universidade Federal do Semi-Árido), termo 2023.2, localizada em Mossoró/RN, Brasil.
 
+> Estado atual: O MOSS-OWLC está em fase de desenvolvimento e atualmente está sendo construido o analisador sintático do compilador completo, portanto, executar o OLA isoladamente não faz mais sentido.
+
 ## Visão Geral
 
-O MOSS-OWLC tem como objetivo fornecer uma ferramenta para compilar OWL, uma linguagem usada para representar conhecimento sobre um domínio e descrever as relações entre entidades dentro desse domínio. Este compilador analisa o código OWL e gera uma saída correspondente legível por máquina.
+O MOSS-OWLC tem como objetivo fornecer uma ferramenta para compilar OWL, uma linguagem usada para representar conhecimento sobre um domínio e descrever as relações entre entidades dentro desse domínio. 
+<u>Este compilador analisa o código OWL e gera uma saída correspondente legível por máquina.</u>
 
 ## Funcionalidades
 
 - Análise léxica usando o OLA (Owl Lexical Analyzer) para tokenização.
 - Análise sintática para verificar a estrutura gramatical do código OWL.
-- Compilação de código OWL em formato legível por máquina.
+<u>- Compilação de código OWL em formato legível por máquina.</u>
 - Geração de tabela de símbolos para rastrear os tipos de token e suas ocorrências.
 
 ## OLA (Analisador Léxico de OWL)
 
 OLA serve como o analisador léxico para o MOSS-OWLC. Ele tokeniza o código OWL, identificando lexemas e gerando uma tabela de símbolos contendo os tipos de token e suas frequências.
 
+## OSA (Analisador Léxico de OWL)
+
+OLA serve como o analisador sintático para o MOSS-OWLC. Ele analisa a sintaxe d código OWL a partir de uma grmática livre de contexto que analisa os lexemas gerados pelo OLA e cria uma arvore de produções gramaticáis.
+
 ## Como Começar
 
-Para executar o MOSS-OWLC e o OLA, siga estes passos:
+Para executar o MOSS-OWLC e o OSA, siga estes passos:
 
 1. Certifique-se de que o Python está instalado em sua máquina.
 
@@ -62,11 +69,4 @@ Ao executar o analisador sintático, o programa verificará a estrutura gramatic
 
 ## Contribuidores
 
-Este projeto foi desenvolvido pelos estudantes da disciplina de compiladores na UFERSA, termo 2023.2, sob a orientação do [Nome do Professor].
-
-## Feedback
-
-Para quaisquer perguntas, feedback ou problemas relacionados ao MOSS-OWLC, entre em contato com [Seu Nome] em [seu endereço de e-mail].
-
----
-Substitua espaços reservados como [Nome do Professor], [Seu Nome] e [seu endereço de e-mail] pelas informações apropriadas.
+Este projeto foi desenvolvido pelos estudantes João Goulart e Arthur Lennon da disciplina de compiladores na UFERSA, termo 2023.2, sob a orientação do Professor Patrício Alencar.
