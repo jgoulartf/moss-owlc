@@ -1,4 +1,16 @@
-# Yacc example
+"""
+    ┏┓┓ ┏┓      ┏┓┓ ┏┓   ┓           ┓  ┏┓    ┓
+    ┃┃┃ ┣┫  ━━  ┃┃┃┃┃┃   ┃ ┏┓┓┏ ┓┏┏┏┓┃  ┣┫┏┓┏┓┃┓┏┓┏┓┏┓
+    ┗┛┗┛┛┗      ┗┛┗┻┛┗┛  ┗┛┗ ┛┗ ┗┫┗┗┻┗  ┛┗┛┗┗┻┗┗┫┗┗ ┛
+                                 ┛              ┛
+
+    Script para definição de um analisador sintát de owl manchester syntax utilizando a biblioteca ply-lex.
+
+
+    By: Arthur Lennon && João Goulart
+    At: UFERSA - Campus Mossoró - 07/12/2023
+    Version: 0.1.0
+"""
 
 import ply.yacc
 
@@ -6,51 +18,110 @@ import ply.yacc
 from ola_2 import tokens
 from ola_2 import parse_owl_input as lexer_parser
 
-# Função para manipular erros de sintaxe
+
 def p_error(p):
-    if p is not None:
-        print("\nErro de sintaxe na entrada!\n")
-        print("ERRO: ", p)
+    if p:
+        print("\nERROR:")
+        print(f"  - Token type: {p.type}\n  - Token value: {p.value}\n  - Line number: {p.lineno}\n  - Token position: {p.lexpos}\n  - Text near token: {p.lexer.lexdata[max(p.lexpos-10, 0):p.lexpos+10]}")
+    else:
+        print("Syntax error: Unexpected end of file")
 
+
+# Gramática do analisador sintático
 def p_start(p):
-    '''S : primitive_class
-            | defined_class
-            | closure_class
-            | nested_class
-            | empty
+
     '''
-    print("Classe primitiva:", p)
 
+    S : primitive_class
+         | defined_class
+         | closure_class
+         | nested_class
+         | enumerated_class
+         | empty
 
-# Função para representar uma classe primitiva
-def p_primitive_class(p):
-    '''primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals primitive_class
-                       | empty
-    '''
-    print("Classe primitiva:", p)
-
-# Função para representar uma classe definida
-def p_defined_class(p):
-   '''defined_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals defined_class
+    primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals primitive_class
                     | empty
-   '''
-   print("Classe definida:", p)
 
+    defined_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals defined_class
+                  | empty
+
+    nested_class  : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+                  | empty
+
+    enumerated_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
+                     | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+
+    closure_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of
+                  | empty
+
+
+    sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional
+                 | KEYWORD_SUBCLASSOF TWOPOINTS CLASS KEYWORD sub_class_of
+                 | KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of
+                 | KEYWORD_SUBCLASSOF TWOPOINTS NAMESPACE KEYWORD LPAREN property_expression RPAREN sub_class_of
+                 | KEYWORD_SUBCLASSOF CLASS SPECIAL_SYMBOL sub_class_of
+                 | PROPERTY KEYWORD CLASS SPECIAL_SYMBOL sub_class_of
+                 | PROPERTY KEYWORD LPAREN CLASS RPAREN sub_class_of
+                 | PROPERTY KEYWORD LPAREN class_or RPAREN sub_class_of
+                 | empty
+
+    sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression
+                         | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
+                         | empty
+
+
+    sub_class_of_optional : sub_class_expression sub_class_of
+                          | disjoint_classes
+                          | empty
+
+    equivalent_to : KEYWORD_EQUIVALENTTO TWOPOINTS equivalent_to_expression
+                  | empty
+
+
+
+    equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
+                                | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_expression
+                                | KEYWORD LPAREN PROPERTY KEYWORD LPAREN property_expression equivalent_to_expression
+                                | KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN equivalent_to_expression
+
+                                | equivalent_to_enumerated_expression
+                                | SPECIAL_SYMBOL CLASS equivalent_to_expression
+                                | SPECIAL_SYMBOL CLASS SPECIAL_SYMBOL equivalent_to_expression
+                                | equivalent_to_nested_expression
+                                | empty
+
+    equivalent_to_nested_expression : CLASS KEYWORD equivalent_to_nested_expression
+                                    | KEYWORD LPAREN PROPERTY KEYWORD equivalent_to_nested_expression
+                                    | LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_nested_expression
+                                    |
+
+
+    individuals : KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals
+                | SPECIAL_SYMBOL INDIVIDUAL individuals
+                | empty
+
+
+    property_expression  : PROPERTY KEYWORD CLASS SPECIAL_SYMBOL property_expression
+                            | PROPERTY KEYWORD property_expression_closure
+                            | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+                            | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+                            | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN
+                            | empty
+
+        class_or    : CLASS KEYWORD class_or
+                    | CLASS class_or
+                    | KEYWORD CLASS
+                    | empty
+
+
+
+    '''
+    print(p)
 # Função para representar uma expressão de subclasse para axioma de fechamento
 def p_closure_class(p):
     '''
-        closure_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of
-                      | empty
     '''
     print("Classe para axioma de fechamento:", p)
-
-def p_nested_class(p):
-    '''
-        nested_class  : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-                      | empty
-    '''
-    print("Classe para axioma de fechamento:", p)
-
 
 # Função para representar uma expressão de subclasse para axioma de fechamento
 #def p_closure_subclass_of(p):
@@ -64,12 +135,6 @@ def p_nested_class(p):
 #| SPECIAL_SYMBOL CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
 def p_property_expression(p):
     '''
-        property_expression  : PROPERTY KEYWORD CLASS SPECIAL_SYMBOL property_expression
-                             | PROPERTY KEYWORD property_expression_closure
-                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
-                             | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
-
-                             | empty
     '''
     print("Subclasse de para expressão de propriedade", p)
 
@@ -99,13 +164,6 @@ def p_nested_descriptions_class(p):
     '''
     print("Classe com descrições aninhadas:", p)
 
-# Função para representar uma classe enumerada
-def p_enumerated_class(p):
-   '''enumerated_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
-                       | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-   '''
-   print("Classe enumerada:", p)
-
 # Função para representar uma classe coberta
 def p_covered_class(p):
    '''covered_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
@@ -113,32 +171,7 @@ def p_covered_class(p):
    '''
    print("Classe coberta:", p)
 
-# Função para representar a relação de subclasse
-def p_sub_class_of(p):
-    '''sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional
-                    | KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of
-                    | property_expression SPECIAL_SYMBOL sub_class_of
-                    | KEYWORD_SUBCLASSOF CLASS SPECIAL_SYMBOL
-                    | empty
-    '''
-    print("P sub_class_of", p)
 
-def p_sub_class_of_optional(p):
-    '''sub_class_of_optional  : sub_class_expression sub_class_of
-                              | disjoint_classes
-                              | empty
-    '''
-    print("P p_sub_class_of_optional", p)
-
-
-# Função para representar a expressão da subclasse
-def p_sub_class_expression(p):
-    '''
-        sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression
-                             | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
-                             | empty
-    '''
-    print("P p_sub_class_expression", p)
 
 
 # Função para representar classes disjuntas
@@ -150,33 +183,13 @@ def p_disjoint_classes(p):
     '''
     print("P p_sub_class_expression", p)
 
-def p_individuals(p):
-    '''
-        individuals : KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals
-                    | SPECIAL_SYMBOL INDIVIDUAL
-                    | empty
-    '''
-    print("P p_individuals", p)
-
 # Função para representar uma expressão equivalente
 def p_equivalent_to(p):
     '''
-        equivalent_to : KEYWORD_EQUIVALENTTO TWOPOINTS equivalent_to_expression
-                      | empty
+
     '''
     print("Equivalente a:", p)
 
-# Função para representar uma expressão equivalente
-def p_equivalent_to_expression(p):
-   '''
-       equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
-                                | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN
-                                | equivalent_to_enumerated_expression
-
-                                | equivalent_to_nested_expression
-                                | empty
-   '''
-   print("Expressão equivalente:", p)
 
 def p_equivalent_to_enumerated_expression(p):
    '''
@@ -187,15 +200,6 @@ def p_equivalent_to_enumerated_expression(p):
    '''
    print("Expressão equivalente:", p)
 
-def p_equivalent_to_covered_expression(p):
-    '''
-        equivalent_to_nested_expression : CLASS KEYWORD equivalent_to_nested_expression
-                                        | KEYWORD LPAREN PROPERTY KEYWORD equivalent_to_nested_expression
-                                        | LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_nested_expression
-                                        |
-    '''
-    print("Expressão equivalente:", p)
-
 
 # Função para representar uma expressão de subclasse opcional
 # def p_sub_class_of_optional(p):
@@ -205,14 +209,6 @@ def p_equivalent_to_covered_expression(p):
 #    '''
 #    print("Subclasse de (opcional):", p)
 
-def p_class_or(p):
-    '''
-        class_or    : CLASS KEYWORD class_or
-                    | CLASS class_or
-                    | KEYWORD CLASS
-                    | empty
-    '''
-    print("Subclasse de para expressão de propriedade", p)
 
 
 
