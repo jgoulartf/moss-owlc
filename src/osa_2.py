@@ -18,7 +18,6 @@ import ply.yacc
 from ola_2 import tokens
 from ola_2 import parse_owl_input as lexer_parser
 
-
 def p_error(p):
     if p:
         print("\nERROR:")
@@ -29,15 +28,15 @@ def p_error(p):
 
 # Gramática do analisador sintático
 def p_start(p):
-
     '''
 
     S : primitive_class
-         | defined_class
-         | closure_class
-         | nested_class
-         | enumerated_class
-         | empty
+      | defined_class
+      | closure_class
+      | nested_class
+      | covered_class
+      | enumerated_class
+      | empty
 
     primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals primitive_class
                     | empty
@@ -48,12 +47,14 @@ def p_start(p):
     nested_class  : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
                   | empty
 
+    covered_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
+                  | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+
     enumerated_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
                      | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
 
     closure_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of
                   | empty
-
 
     sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional
                  | KEYWORD_SUBCLASSOF TWOPOINTS CLASS KEYWORD sub_class_of
@@ -62,7 +63,7 @@ def p_start(p):
                  | KEYWORD_SUBCLASSOF CLASS SPECIAL_SYMBOL sub_class_of
                  | PROPERTY KEYWORD CLASS SPECIAL_SYMBOL sub_class_of
                  | PROPERTY KEYWORD LPAREN CLASS RPAREN sub_class_of
-                 | PROPERTY KEYWORD LPAREN class_or RPAREN sub_class_of
+                 | PROPERTY KEYWORD LPAREN equivalent_to_covered_expression RPAREN sub_class_of
                  | empty
 
     sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression
@@ -80,15 +81,21 @@ def p_start(p):
 
 
     equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
-                                | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_expression
-                                | KEYWORD LPAREN PROPERTY KEYWORD LPAREN property_expression equivalent_to_expression
-                                | KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN equivalent_to_expression
-
-                                | equivalent_to_enumerated_expression
-                                | SPECIAL_SYMBOL CLASS equivalent_to_expression
-                                | SPECIAL_SYMBOL CLASS SPECIAL_SYMBOL equivalent_to_expression
-                                | equivalent_to_nested_expression
-                                | empty
+                             | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_expression
+                             | CLASS KEYWORD LPAREN PROPERTY KEYWORD LPAREN property_expression equivalent_to_expression
+                             | KEYWORD LPAREN PROPERTY KEYWORD LPAREN property_expression equivalent_to_expression
+                             | KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN equivalent_to_expression
+                             | SPECIAL_SYMBOL CLASS equivalent_to_expression
+                             | SPECIAL_SYMBOL CLASS SPECIAL_SYMBOL equivalent_to_expression
+                             | equivalent_to_enumerated_expression
+                             | equivalent_to_nested_expression
+                             | equivalent_to_covered_expression
+                             | empty
+                             
+    equivalent_to_enumerated_expression  : LKEY INSTANCE SPECIAL_SYMBOL
+                                        | INSTANCE SPECIAL_SYMBOL
+                                        | INSTANCE RKEY
+                                        | empty
 
     equivalent_to_nested_expression : CLASS KEYWORD equivalent_to_nested_expression
                                     | KEYWORD LPAREN PROPERTY KEYWORD equivalent_to_nested_expression
@@ -102,115 +109,34 @@ def p_start(p):
 
 
     property_expression  : PROPERTY KEYWORD CLASS SPECIAL_SYMBOL property_expression
-                            | PROPERTY KEYWORD property_expression_closure
-                            | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
-                            | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
-                            | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN
-                            | empty
-
-        class_or    : CLASS KEYWORD class_or
-                    | CLASS class_or
-                    | KEYWORD CLASS
-                    | empty
-
-
-
-    '''
-    print(p)
-# Função para representar uma expressão de subclasse para axioma de fechamento
-def p_closure_class(p):
-    '''
-    '''
-    print("Classe para axioma de fechamento:", p)
-
-# Função para representar uma expressão de subclasse para axioma de fechamento
-#def p_closure_subclass_of(p):
-#    '''
-#        closure_subclass_of :
-#    '''
-#    print("Subclasse de para axioma de fechamento:", p)
-
-
-#| SPECIAL_SYMBOL CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN
-#| SPECIAL_SYMBOL CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
-def p_property_expression(p):
-    '''
-    '''
-    print("Subclasse de para expressão de propriedade", p)
-
-def p_property_expression_closure(p):
-    '''
-        property_expression_closure : LPAREN CLASS property_expression_closure
-                                    | KEYWORD CLASS property_expression_closure
-                                    | KEYWORD CLASS RPAREN property_expression
-                                    | empty
-    '''
-
-
-
-
-
-# Função para representar uma classe com axioma de fechamento
-#def p_closure_axiom_class(p):
-#    '''closure_axiom_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of_closure individuals
-#                           | KEYWORD_CLASS TWOPOINTS CLASS sub_class_of_closure
-#    '''
-#    print("Classe com axioma de fechamento:", p)
-
-# Função para representar uma classe com descrições aninhadas
-def p_nested_descriptions_class(p):
-    '''nested_descriptions_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
-                                 | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-    '''
-    print("Classe com descrições aninhadas:", p)
-
-# Função para representar uma classe coberta
-def p_covered_class(p):
-   '''covered_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
-                    | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
-   '''
-   print("Classe coberta:", p)
-
-
-
-
-# Função para representar classes disjuntas
-def p_disjoint_classes(p):
-    '''
-        disjoint_classes : KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes
-                         | SPECIAL_SYMBOL CLASS disjoint_classes
+                         | PROPERTY KEYWORD LPAREN property_expression
+                         | PROPERTY KEYWORD property_expression_closure
+                         | PROPERTY KEYWORD CLASS RPAREN property_expression
+                         | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+                         | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE SPECIAL_SYMBOL NUMERAL SPECIAL_SYMBOL
+                         | PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN
+                         | RPAREN property_expression
                          | empty
+
+    equivalent_to_covered_expression : CLASS KEYWORD equivalent_to_covered_expression
+                                     | CLASS equivalent_to_covered_expression
+                                     | KEYWORD CLASS
+                                     | empty
+    
+    disjoint_classes : KEYWORD_DISJOINT TWOPOINTS CLASS disjoint_classes
+                     | SPECIAL_SYMBOL CLASS disjoint_classes
+                     | empty
+
+    property_expression_closure : LPAREN CLASS property_expression_closure
+                                | KEYWORD CLASS property_expression_closure
+                                | KEYWORD CLASS RPAREN property_expression
+                                | empty
+
+    nested_descriptions_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals
+                              | KEYWORD_CLASS TWOPOINTS CLASS equivalent_to
+
+
     '''
-    print("P p_sub_class_expression", p)
-
-# Função para representar uma expressão equivalente
-def p_equivalent_to(p):
-    '''
-
-    '''
-    print("Equivalente a:", p)
-
-
-def p_equivalent_to_enumerated_expression(p):
-   '''
-       equivalent_to_enumerated_expression  : LKEY INSTANCE SPECIAL_SYMBOL
-                                            | INSTANCE SPECIAL_SYMBOL
-                                            | INSTANCE RKEY
-                                            | empty
-   '''
-   print("Expressão equivalente:", p)
-
-
-# Função para representar uma expressão de subclasse opcional
-# def p_sub_class_of_optional(p):
-#    '''sub_class_of_optional  : sub_class_expression sub_class_of
-#                              | disjoint_classes
-#                              | empty
-#    '''
-#    print("Subclasse de (opcional):", p)
-
-
-
 
 # Função para representar o token vazio
 def p_empty(p):

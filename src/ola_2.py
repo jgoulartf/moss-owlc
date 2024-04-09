@@ -105,7 +105,7 @@ def t_SPECIAL_SYMBOL(t):
     return t
 
 def t_NAMESPACE(t):
-    r'([a-z]+)'
+    r'([a-z]+):'
     return t
 
 # Ignorar tabulação e novalinha
