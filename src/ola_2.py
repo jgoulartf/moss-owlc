@@ -1,4 +1,5 @@
 import ply.lex as lex
+import re
 
 # Determinando propriedades do analisador, tokens e expressoes regulares necessárias para o parser
 tokens = [
@@ -44,8 +45,6 @@ t_RCOLCH  = r'\]'
 t_LKEY = r'\{'
 t_RKEY = r'\}'
 
-t_TWOPOINTS  = r':'
-
 def t_KEYWORD(t):
     r' SOME | some | ALL | all | VALUE | value | MIN | min | MAX | max | EXACTLY \
     | exactly | THAT | that | NOT | not | AND | and | OR | or | Only | only'
@@ -80,7 +79,7 @@ def t_INDIVIDUAL(t):
     return t
 
 def t_PROPERTY(t):
-    r'has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z]) \s'
+    r'has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z]) \s | ssn'
     return t
 
 def t_CARDINALITY(t):
@@ -105,7 +104,16 @@ def t_SPECIAL_SYMBOL(t):
     return t
 
 def t_NAMESPACE(t):
-    r'([a-z]+):'
+    r'([a-z]+)'
+    #print("t:", t)
+    #re.search(r'([a-z]+):',t)
+    #print("re.match: ", )
+    #t.value = re.match(r'([a-z]+):', t.value).group(1)
+    #t.value = t.value[:-1]  # Removing the colon from the matched text
+    return t
+
+def t_TWOPOINTS(t):
+    r':'
     return t
 
 # Ignorar tabulação e novalinha
@@ -139,6 +147,12 @@ def parse_owl_input(input_text):
     while True:
         try:
             tok = lexer.token()
+            #if tok.type == "NAMESPACE":
+            #    print("TOK: ", tok)
+            #    print("LEXMATCH: ", lexer.lexmatch)
+            #
+            #    #tok.value = lexer.lexmatch.group(0)
+
         except:
             break
 

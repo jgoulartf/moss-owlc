@@ -36,10 +36,14 @@ def p_start(p):
       | nested_class
       | covered_class
       | enumerated_class
+      | other_class
       | empty
 
     primitive_class : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of disjoint_classes individuals primitive_class
                     | empty
+
+    other_class     : KEYWORD_CLASS TWOPOINTS CLASS sub_class_of individuals other_class
+                    | empty                    
 
     defined_class : KEYWORD_CLASS TWOPOINTS CLASS equivalent_to individuals defined_class
                   | empty
@@ -59,7 +63,7 @@ def p_start(p):
     sub_class_of : KEYWORD_SUBCLASSOF TWOPOINTS sub_class_expression sub_class_of_optional
                  | KEYWORD_SUBCLASSOF TWOPOINTS CLASS KEYWORD sub_class_of
                  | KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of
-                 | KEYWORD_SUBCLASSOF TWOPOINTS NAMESPACE KEYWORD LPAREN property_expression RPAREN sub_class_of
+                 | KEYWORD_SUBCLASSOF TWOPOINTS NAMESPACE KEYWORD LPAREN property_expression sub_class_of
                  | KEYWORD_SUBCLASSOF CLASS SPECIAL_SYMBOL sub_class_of
                  | PROPERTY KEYWORD CLASS SPECIAL_SYMBOL sub_class_of
                  | PROPERTY KEYWORD LPAREN CLASS RPAREN sub_class_of
@@ -102,13 +106,12 @@ def p_start(p):
                                     | LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_nested_expression
                                     |
 
-
     individuals : KEYWORD_INDIVIDUALS TWOPOINTS INDIVIDUAL individuals
                 | SPECIAL_SYMBOL INDIVIDUAL individuals
                 | empty
 
-
     property_expression  : PROPERTY KEYWORD CLASS SPECIAL_SYMBOL property_expression
+                         | PROPERTY KEYWORD NUMERAL NAMESPACE TWOPOINTS TYPE property_expression
                          | PROPERTY KEYWORD LPAREN property_expression
                          | PROPERTY KEYWORD property_expression_closure
                          | PROPERTY KEYWORD CLASS RPAREN property_expression
