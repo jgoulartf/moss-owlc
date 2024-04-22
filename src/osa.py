@@ -8,9 +8,12 @@
 """
 import ply.yacc
 from ola import tokens
+from ply.yacc import Grammar, GrammarError
 
+# Global
 error_count = 0
-
+parser = None
+prod_counter = 0
 
 # Gramática do analisador sintático
 def p_start(p):
@@ -126,6 +129,11 @@ def p_start(p):
 
 
     """
+    global prod_counter
+    prod_counter += 1
+    print(p.slice)
+    print(p.parser.statestack)
+    print(p.parser.symstack)
 
 
 def p_error(p):
@@ -146,10 +154,18 @@ def p_empty(p):
 
 
 def parse_owl_input(input_text):
+    global parser
+
     parser = ply.yacc.yacc()
+
     result = parser.parse(input_text, tracking=True)
 
+
     if result is None and error_count == 0:
+        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
         print("Análise concluída")
+        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
     elif error_count > 0:
+        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
         print("Análise concluída com erros")
+        print("_ _ _ _ _ _ _ _ _ _ _ _ ")

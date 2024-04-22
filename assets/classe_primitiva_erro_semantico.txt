@@ -10,4 +10,3 @@ Individuals:
 
 DisjointClasses:
     Pizza, PizzaBase, PizzaTopping
-
