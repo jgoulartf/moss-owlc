@@ -1,14 +1,9 @@
 """
-    ┏┓┓ ┏┓      ┏┓┓ ┏┓   ┓           ┓  ┏┓    ┓
-    ┃┃┃ ┣┫  ━━  ┃┃┃┃┃┃   ┃ ┏┓┓┏ ┓┏┏┏┓┃  ┣┫┏┓┏┓┃┓┏┓┏┓┏┓
-    ┗┛┗┛┛┗      ┗┛┗┻┛┗┛  ┗┛┗ ┛┗ ┗┫┗┗┻┗  ┛┗┛┗┗┻┗┗┫┗┗ ┛
-                                 ┛              ┛
-
-    Script para definição de um analisador sintát de owl manchester syntax utilizando a biblioteca ply-lex.
+    Script para definição de um analisador sintático de owl manchester syntax utilizando a biblioteca ply-lex.
 
 
     By: Arthur Lennon && João Goulart
-    At: UFERSA - Campus Mossoró - 07/12/2023
+    At: UFERSA - Campus Mossoró - 07/03/2023
     Version: 0.1.0
 """
 
@@ -224,14 +219,14 @@ def display_menu():
     print("4. Classe com descrições aninhadas")
     print("5. Classe enumerada")
     print("6. Classe coberta")
-    print("7. Ontologia das pizzas")
-    print("8. Ontologia do Manoel - Soberania de dados")
+    #print("7. Ontologia das pizzas")
+    #print("8. Ontologia do Manoel - Soberania de dados")
     return input("Escolha a entrada do analisador sintático: ")
 
 # Loop principal do programa
 while True:
     user_choice = display_menu()
-    if user_choice in ['1', '2', '3', '4', '5', '6', '7', '8']:
+    if user_choice in ['1', '2', '3', '4', '5', '6']:
         handle_user_choice(user_choice)
     else:
         print("Escolha inválida!")
