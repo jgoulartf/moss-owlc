@@ -1,0 +1,7 @@
+Class: MargheritaPizza
+
+SubClassOf:
+  NamedPizza,
+    hasTopping only (MozzarellaTopping or TomatoTopping),
+    hasTopping some MozzarellaTopping,
+    hasTopping some TomatoTopping
