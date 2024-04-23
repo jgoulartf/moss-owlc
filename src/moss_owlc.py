@@ -7,12 +7,30 @@
 """
 
 from utils.functions import *
+import os
 
+executando = True
+nova_analise = False
 
 # Loop principal do programa
-while True:
+while executando:
     user_choice = display_menu()
     if user_choice in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
         handle_user_choice(user_choice)
+        nova_analise = True
     else:
-        print("Escolha inválida!")
+        print("\n->Opção inválida<-\n")
+
+    while nova_analise:
+        input_nova_analise = input("\nDeseja Analisar outro caso?\n[1] Sim \n[2] Não\n->")
+        if input_nova_analise in ['1', '2']:
+            if input_nova_analise == '1':
+                #os.system('clear')
+                executando = True
+                nova_analise = False
+            elif input_nova_analise == '2':
+                executando = False
+                nova_analise = False
+                print("\nExecução do MOSS-OWLC finalizada...")
+        else:
+            print("\n->Opção inválida<-")

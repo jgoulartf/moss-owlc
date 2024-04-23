@@ -8,18 +8,38 @@ def read_file(filename):
 
 
 def display_menu():
+    print("""
+    \t\t\t\t███╗   ███╗ ██████╗ ███████╗███████╗       ██████╗ ██╗    ██╗██╗      ██████╗
+    \t\t\t\t████╗ ████║██╔═══██╗██╔════╝██╔════╝      ██╔═══██╗██║    ██║██║     ██╔════╝
+    \t\t\t\t██╔████╔██║██║   ██║███████╗███████╗█████╗██║   ██║██║ █╗ ██║██║     ██║     
+    \t\t\t\t██║╚██╔╝██║██║   ██║╚════██║╚════██║╚════╝██║   ██║██║███╗██║██║     ██║     
+    \t\t\t\t██║ ╚═╝ ██║╚██████╔╝███████║███████║      ╚██████╔╝╚███╔███╔╝███████╗╚██████╗
+    \t\t\t\t╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚══════╝       ╚═════╝  ╚══╝╚══╝ ╚══════╝ ╚═════╝                                                                                                                                                                                                                                    
+    """)
 
-    print("\nEscolha o que deseja analisar:")
-    print("1. Classe primitiva")
-    print("2. Classe definida")
-    print("3. Classe com axioma de fechamento (closure axiom)")
-    print("4. Classe com descrições aninhadas")
-    print("5. Classe enumerada")
-    print("6. Classe coberta")
-    print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ")
-    print("7. Classe primitiva com erro semântico")
-    print("8. Classe com axioma de fechamento com erro semântico")
-    return input("Escolha a entrada do analisador sintático: ")
+    print("- - - - - - - - - - - - - - - - - - - -")
+    print("- - - - - OPÇÕES DE ENTRADA - - - - - -")
+    print("- - - - - - - - - - - - - - - - - - - -\n")
+    print("\t1. Classe primitiva")
+    print("\t2. Classe definida")
+    print("\t3. Classe com axioma de fechamento (closure axiom)")
+    print("\t4. Classe com descrições aninhadas")
+    print("\t5. Classe enumerada")
+    print("\t6. Classe coberta")
+    #print("- - - - - - - - - - - - - - - - - - - -")
+    print("\n- - - TESTES COM ERROS SEMÂNTICOS - - -")
+    #print("- - - - - - - - - - - - - - - - - - - -")
+    print("\t7. Classe primitiva com erro semântico de precedência de operadores")
+    print("\t8. Classe com axioma de fechamento com erro semântico de precedência de operadores")
+    print("\t9. Classe primitiva com erro semântico de coerção de tipo")
+
+    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+
+    print("\n- - - - - - - - - - - - - - - - - - - - - - - - - -")
+    print("\tEscolha a entrada do analisador sintático")
+    print("- - - - - - - - - - - - - - - - - - - - - - - - - -")
+    input_user = input("->")
+    return input_user
 
 
 def parse_input_and_lexical_analysis():
@@ -28,50 +48,51 @@ def parse_input_and_lexical_analysis():
 
 
 def handle_user_choice(choice):
+
     if choice == '1':
         print("Analisando classe primitiva...")
-        lexer_parser(read_file("../assets/classe_primitiva.txt"))
-        sint_parser(read_file('../assets/classe_primitiva.txt'))
+        lexer_parser(read_file("./assets/classe_primitiva.txt"))
+        sint_parser(read_file('./assets/classe_primitiva.txt'))
 
     elif choice == '2':
         print("Analisando classe definida...")
-        lexer_parser(read_file("../assets/classe_definida.txt"))
-        sint_parser(read_file('../assets/classe_definida.txt'))
+        lexer_parser(read_file("./assets/classe_definida.txt"))
+        sint_parser(read_file('./assets/classe_definida.txt'))
 
     elif choice == '3':
         print("Analisando classe com axioma de fechamento...")
-        lexer_parser(read_file("../assets/classe_fechamento.txt"))
-        sint_parser(read_file('../assets/classe_fechamento.txt'))
+        lexer_parser(read_file("./assets/classe_fechamento.txt"))
+        sint_parser(read_file('./assets/classe_fechamento.txt'))
 
     elif choice == '4':
         print("Analisando classe com descrições aninhadas...")
-        lexer_parser(read_file("../assets/classe_aninhada.txt"))
-        sint_parser(read_file('../assets/classe_aninhada.txt'))
+        lexer_parser(read_file("./assets/classe_aninhada.txt"))
+        sint_parser(read_file('./assets/classe_aninhada.txt'))
 
     elif choice == '5':
         print("Analisando classe enumerada...")
-        lexer_parser(read_file("../assets/classe_enumerada.txt"))
-        sint_parser(read_file('../assets/classe_enumerada.txt'))
+        lexer_parser(read_file("./assets/classe_enumerada.txt"))
+        sint_parser(read_file('./assets/classe_enumerada.txt'))
 
     elif choice == '6':
         print("Analisando classe coberta...")
-        lexer_parser(read_file("../assets/classe_coberta.txt"))
-        sint_parser(read_file('../assets/classe_coberta.txt'))
+        lexer_parser(read_file("./assets/classe_coberta.txt"))
+        sint_parser(read_file('./assets/classe_coberta.txt'))
 
     elif choice == '7':
         print("Analisando classe primitiva com erro semântico...")
-        lexer_parser(read_file("../assets/classe_primitiva_erro_semantico.txt"))
-        sint_parser(read_file('../assets/classe_primitiva_erro_semantico.txt'))
+        lexer_parser(read_file("./assets/classe_primitiva_erro_semantico.txt"))
+        sint_parser(read_file('./assets/classe_primitiva_erro_semantico.txt'))
 
     elif choice == '8':
         print("Classe com axioma de fechamento com erro semântico...")
-        lexer_parser(read_file("../assets/classe_fechamento_erro_semantico.txt"))
-        sint_parser(read_file('../assets/classe_fechamento_erro_semantico.txt'))
+        lexer_parser(read_file("./assets/classe_fechamento_erro_semantico.txt"))
+        sint_parser(read_file('./assets/classe_fechamento_erro_semantico.txt'))
 
     elif choice == '9':
         print("Classe definida com erro semântico...")
-        lexer_parser(read_file("../assets/classe_definida_erro_semantico.txt"))
-        sint_parser(read_file('../assets/classe_definida_erro_semantico.txt'))
+        lexer_parser(read_file("./assets/classe_definida_erro_semantico.txt"))
+        sint_parser(read_file('./assets/classe_definida_erro_semantico.txt'))
 
     #elif choice == '9':
     #    print("Analisando a ontologia das pizzas...")

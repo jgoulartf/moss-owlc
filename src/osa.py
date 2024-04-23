@@ -15,6 +15,7 @@ error_count = 0
 parser = None
 prod_counter = 0
 
+
 # Gramática do analisador sintático
 def p_start(p):
     """
@@ -131,9 +132,9 @@ def p_start(p):
     """
     global prod_counter
     prod_counter += 1
-    print(p.slice)
-    print(p.parser.statestack)
-    print(p.parser.symstack)
+    #print(p.slice)
+    #print(p.parser.statestack)
+    #print(p.parser.symstack)
 
 
 def p_error(p):
@@ -144,6 +145,7 @@ def p_error(p):
         print("\nERROR:")
         print(
             f"  - Token type: {p.type}\n  - Token value: {p.value}\n  - Line number: {p.lineno}\n  - Token position: {p.lexpos}\n  - Text near token: {p.lexer.lexdata[max(p.lexpos - 10, 0):p.lexpos + 10]}")
+        print(f"Unexpected {p.type} at line {p.lineno} position {p.lexpos}")
     else:
         print("Syntax error: Unexpected end of file")
 
@@ -160,12 +162,11 @@ def parse_owl_input(input_text):
 
     result = parser.parse(input_text, tracking=True)
 
-
     if result is None and error_count == 0:
-        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
-        print("Análise concluída")
-        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
+        print("\n\n- - - - - - - - - - - - - - -")
+        print("Análise concluída SEM ERROS")
+        print("- - - - - - - - - - - - - - -")
     elif error_count > 0:
-        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
-        print("Análise concluída com erros")
-        print("_ _ _ _ _ _ _ _ _ _ _ _ ")
+        print("\n\n- - - - - - - - - - - - - - -")
+        print("Análise concluída COM ERROS")
+        print("- - - - - - - - - - - - - - -")
