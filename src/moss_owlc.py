@@ -7,7 +7,6 @@
 """
 
 from utils.functions import *
-import os
 
 executando = True
 nova_analise = False
@@ -22,10 +21,9 @@ while executando:
         print("\n->Opção inválida<-\n")
 
     while nova_analise:
-        input_nova_analise = input("\nDeseja Analisar outro caso?\n[1] Sim \n[2] Não\n->")
+        input_nova_analise = input("\nDeseja analisar outro caso?\n[1] Sim \n[2] Não\n->")
         if input_nova_analise in ['1', '2']:
             if input_nova_analise == '1':
-                #os.system('clear')
                 executando = True
                 nova_analise = False
             elif input_nova_analise == '2':
