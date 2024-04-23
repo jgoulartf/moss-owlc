@@ -133,6 +133,9 @@ def p_start(p):
     """
     global prod_counter
     prod_counter += 1
+    print("OSA LINE NUM: ", p.lexer.lineno)
+    p.lexer.lineno += 1
+
     #print(p.slice)
     #print(p.parser.statestack)
     #print(p.parser.symstack)
@@ -141,12 +144,13 @@ def p_start(p):
 def p_error(p):
     global error_count
     error_count = error_count + 1
-
+    global parser
     if p:
         print(Fore.RED + "\nERROR:")
         #print(
-            #f"  - Token type: {p.type}\n  - Token value: {p.value}\n  - Line number: {p.lineno}\n  - Token position: {p.lexpos}\n  - Text near token: {p.lexer.lexdata[max(p.lexpos - 10, 0):p.lexpos + 10]}")
-        print(Fore.RED + f"\tUnexpected \"{p.value}\" at line {p.lineno} position {p.lexpos}")
+            #f"  - Token type: {p.type}\n  - Token value: {p.value}\n  - Line number: {p.lineno}\n  - Token position: {p.lexpos}\n  - Text near token: {p.lexer.lexdata[max(p.lexpos - 10, 0):p.lexpos + 10]}"
+        #)
+        print(Fore.RED + f"\tUnexpected \"{p.value}\" at line {p.lineno}")
         print(Fore.RED + f"\tThis should really be a {p.type} token?")
     else:
         print(Fore.RED + "Syntax error: Unexpected end of file")

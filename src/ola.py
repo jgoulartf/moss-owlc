@@ -37,7 +37,8 @@ tokens = [
     'TYPE',
     'NUMERAL',
     'INDIVIDUAL',
-    'INSTANCE'
+    'INSTANCE',
+    'NEWLINE'
 ]
 
 t_LPAREN = r'\('
@@ -135,7 +136,15 @@ def t_TWOPOINTS(t):
     return t
 
 
-t_ignore = ' \t\n'
+def t_NEWLINE(t):
+    r"""\n"""
+    #print("NEWLINE PRINT: ", t.value, t.lexer.lineno)
+
+    #t.lexer.lineno += len(t.value)
+
+
+
+t_ignore = ' \t'
 
 
 def t_error(t):
@@ -183,6 +192,6 @@ def lex_owl_input(input_text):
     print("- - - - - - - - - - - - - - - - - - -")
 
     for token_type, count in symbols_table.items():
-        print(Fore.GREEN + f'\t{token_type:15}\t1{count}')
+        print(Fore.GREEN + f'\t{token_type:15}\t{count}')
 
     print(Style.RESET_ALL)
