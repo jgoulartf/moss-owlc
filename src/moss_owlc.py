@@ -5,9 +5,12 @@
     At: UFERSA - Campus Mossoró - 22/04/2023
     Version: 0.1.0
 """
-
+import sys
+import os
+print(os.getcwd())
 from colorama import just_fix_windows_console, init, Fore
 from utils.functions import *
+
 
 just_fix_windows_console()
 init()

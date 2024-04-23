@@ -1,7 +1,7 @@
 from colorama import Fore, Style
 
-from src.ola import lex_owl_input as lexer_parser
-from src.osa import parse_owl_input as sint_parser
+from ola import lex_owl_input as lexer_parser
+from osa import parse_owl_input as sint_parser
 import os
 
 def read_file(filename):
@@ -54,48 +54,48 @@ def handle_user_choice(choice):
 
     if choice == '1':
         print("Analisando classe primitiva...")
-        lexer_parser(read_file("./assets/classe_primitiva.txt"))
-        sint_parser(read_file('./assets/classe_primitiva.txt'))
+        lexer_parser(read_file("../assets/classe_primitiva.txt"))
+        sint_parser(read_file('../assets/classe_primitiva.txt'))
 
     elif choice == '2':
         print("Analisando classe definida...")
-        lexer_parser(read_file("./assets/classe_definida.txt"))
-        sint_parser(read_file('./assets/classe_definida.txt'))
+        lexer_parser(read_file("../assets/classe_definida.txt"))
+        sint_parser(read_file('../assets/classe_definida.txt'))
 
     elif choice == '3':
         print("Analisando classe com axioma de fechamento...")
-        lexer_parser(read_file("./assets/classe_fechamento.txt"))
-        sint_parser(read_file('./assets/classe_fechamento.txt'))
+        lexer_parser(read_file("../assets/classe_fechamento.txt"))
+        sint_parser(read_file('../assets/classe_fechamento.txt'))
 
     elif choice == '4':
         print("Analisando classe com descrições aninhadas...")
-        lexer_parser(read_file("./assets/classe_aninhada.txt"))
-        sint_parser(read_file('./assets/classe_aninhada.txt'))
+        lexer_parser(read_file("../assets/classe_aninhada.txt"))
+        sint_parser(read_file('../assets/classe_aninhada.txt'))
 
     elif choice == '5':
         print("Analisando classe enumerada...")
-        lexer_parser(read_file("./assets/classe_enumerada.txt"))
-        sint_parser(read_file('./assets/classe_enumerada.txt'))
+        lexer_parser(read_file("../assets/classe_enumerada.txt"))
+        sint_parser(read_file('../assets/classe_enumerada.txt'))
 
     elif choice == '6':
         print("Analisando classe coberta...")
-        lexer_parser(read_file("./assets/classe_coberta.txt"))
-        sint_parser(read_file('./assets/classe_coberta.txt'))
+        lexer_parser(read_file("../assets/classe_coberta.txt"))
+        sint_parser(read_file('../assets/classe_coberta.txt'))
 
     elif choice == '7':
         print("Analisando classe primitiva com erro semântico...")
-        lexer_parser(read_file("./assets/classe_primitiva_erro_semantico.txt"))
-        sint_parser(read_file('./assets/classe_primitiva_erro_semantico.txt'))
+        lexer_parser(read_file("../assets/classe_primitiva_erro_semantico.txt"))
+        sint_parser(read_file('../assets/classe_primitiva_erro_semantico.txt'))
 
     elif choice == '8':
         print("Classe com axioma de fechamento com erro semântico...")
-        lexer_parser(read_file("./assets/classe_fechamento_erro_semantico.txt"))
-        sint_parser(read_file('./assets/classe_fechamento_erro_semantico.txt'))
+        lexer_parser(read_file("../assets/classe_fechamento_erro_semantico.txt"))
+        sint_parser(read_file('../assets/classe_fechamento_erro_semantico.txt'))
 
     elif choice == '9':
         print("Classe definida com erro semântico...")
-        lexer_parser(read_file("./assets/classe_definida_erro_semantico.txt"))
-        sint_parser(read_file('./assets/classe_definida_erro_semantico.txt'))
+        lexer_parser(read_file("../assets/classe_definida_erro_semantico.txt"))
+        sint_parser(read_file('../assets/classe_definida_erro_semantico.txt'))
 
     #elif choice == '9':
     #    print("Analisando a ontologia das pizzas...")
