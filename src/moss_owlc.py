@@ -6,7 +6,12 @@
     Version: 0.1.0
 """
 
+from colorama import just_fix_windows_console, init, Fore
 from utils.functions import *
+
+just_fix_windows_console()
+init()
+
 
 executando = True
 nova_analise = False
@@ -21,7 +26,7 @@ while executando:
         print("\n->Opção inválida<-\n")
 
     while nova_analise:
-        input_nova_analise = input("\nDeseja analisar outro caso?\n[1] Sim \n[2] Não\n->")
+        input_nova_analise = input(Fore.WHITE + "\nDeseja analisar outro caso?\n[1] Sim \n[2] Não\n->")
         if input_nova_analise in ['1', '2']:
             if input_nova_analise == '1':
                 executando = True

@@ -9,6 +9,7 @@
 import ply.yacc
 from ola import tokens
 from ply.yacc import Grammar, GrammarError
+from colorama import Fore, Back, Style
 
 # Global
 error_count = 0
@@ -142,12 +143,13 @@ def p_error(p):
     error_count = error_count + 1
 
     if p:
-        print("\nERROR:")
-        print(
-            f"  - Token type: {p.type}\n  - Token value: {p.value}\n  - Line number: {p.lineno}\n  - Token position: {p.lexpos}\n  - Text near token: {p.lexer.lexdata[max(p.lexpos - 10, 0):p.lexpos + 10]}")
-        print(f"Unexpected {p.type} at line {p.lineno} position {p.lexpos}")
+        print(Fore.RED + "\nERROR:")
+        #print(
+            #f"  - Token type: {p.type}\n  - Token value: {p.value}\n  - Line number: {p.lineno}\n  - Token position: {p.lexpos}\n  - Text near token: {p.lexer.lexdata[max(p.lexpos - 10, 0):p.lexpos + 10]}")
+        print(Fore.RED + f"\tUnexpected \"{p.value}\" at line {p.lineno} position {p.lexpos}")
+        print(Fore.RED + f"\tThis should really be a {p.type} token?")
     else:
-        print("Syntax error: Unexpected end of file")
+        print(Fore.RED + "Syntax error: Unexpected end of file")
 
 
 def p_empty(p):
@@ -157,16 +159,18 @@ def p_empty(p):
 
 def parse_owl_input(input_text):
     global parser
+    global error_count
+    error_count = 0
 
     parser = ply.yacc.yacc()
 
     result = parser.parse(input_text, tracking=True)
 
     if result is None and error_count == 0:
-        print("\n\n- - - - - - - - - - - - - - -")
-        print("Análise concluída SEM ERROS")
-        print("- - - - - - - - - - - - - - -")
+        print(Fore.GREEN + "\n\n- - - - - - - - - - - - - - -")
+        print(Fore.GREEN + "Análise concluída SEM ERROS")
+        print(Fore.GREEN + "- - - - - - - - - - - - - - -")
     elif error_count > 0:
-        print("\n\n- - - - - - - - - - - - - - -")
-        print("Análise concluída COM ERROS")
-        print("- - - - - - - - - - - - - - -")
+        print(Fore.RED + "\n\n- - - - - - - - - - - - - - -")
+        print(Fore.RED + "Análise concluída COM ERROS")
+        print(Fore.RED + "- - - - - - - - - - - - - - -")

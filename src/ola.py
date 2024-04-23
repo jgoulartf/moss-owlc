@@ -1,6 +1,8 @@
 import ply.lex as lex
 import re
 
+from colorama import Fore, Style
+
 # Determinando propriedades do analisador, tokens e expressoes regulares necessárias para o parser
 tokens = [
     'SOME',
@@ -148,17 +150,17 @@ def lex_owl_input(input_text):
     # Applying lexer on the OWL code input and returning a list with the lexemes
     lexer.input(input_text)
 
-    print("\n\n..........................")
-    print("...OWL LEXYCAL ANALYZER...")
-    print("..........................")
+    print("\n- - - - - - - - - - - - - - - - - - -")
+    print("- - - - OWL LEXYCAL ANALYZER - - - -")
+    print("- - - - - - - - - - - - - - - - - - -")
 
     # Dictionary for the symbol table
     symbols_table = {token_type: 0 for token_type in tokens}
 
     # Applying the lexer on the OWL code and returning a list with the lexemes
-    print(f"\n\nREADING SOURCE CODE...")
-    print(f"\n\nGENERATING LEXEMS\n")
-    print("...................................................")
+    print("\n- - - - - - - - - - - - - - - - - - -")
+    print(f"- - - - - GERANDO LEXEMAS - - - - - -")
+    print(f"- - - - - - - - - - - - - - - - - - -")
 
     while True:
         try:
@@ -174,12 +176,13 @@ def lex_owl_input(input_text):
         symbols_table[token] += 1
 
         if tok.type != "SPACE":
-            print(f"Lexem: {tok.type}, Value: {tok.value}")
+            print(Fore.GREEN + f"\tLexem: {tok.type}, Value: {tok.value}")
 
-    print("\n\n\n.........................")
-    print("......Symbols table......")
-    print(".........................")
+    print(Style.RESET_ALL + "\n- - - - - - - - - - - - - - - - - - -")
+    print("- - - - - - Symbols table - - - - - -")
+    print("- - - - - - - - - - - - - - - - - - -")
 
     for token_type, count in symbols_table.items():
-        print(f'{token_type:15} {count}')
+        print(Fore.GREEN + f'\t{token_type:15}\t1{count}')
 
+    print(Style.RESET_ALL)
