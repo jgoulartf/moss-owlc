@@ -31,7 +31,7 @@ def display_menu():
     #print("- - - - - - - - - - - - - - - - - - - -")
     print("\t7. Classe primitiva com erro semântico de precedência de operadores")
     print("\t8. Classe com axioma de fechamento com erro semântico de precedência de operadores")
-    print("\t9. Classe primitiva com erro semântico de coerção de tipo")
+    print("\t9. Classe primitiva com erro semântico de coerção de tipo\n")
 
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 
