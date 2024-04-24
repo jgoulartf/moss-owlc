@@ -56,11 +56,12 @@ Para executar o MOSS-OWLC e o OSA, siga estes passos:
 5. Instale a biblioteca necessária `PLY`:
    ```bash
    pip install ply
+   pip install colorama
    ```
 
 6. Execute o analisador sintático:
    ```bash
-   python3 osa.py
+   python3 moss_owlc.py
    ```
 
 ## Uso
