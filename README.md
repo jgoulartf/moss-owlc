@@ -32,14 +32,13 @@ Para executar o MOSS-OWLC e o OSA, siga estes passos:
 
 1. Certifique-se de que o Python está instalado em sua máquina.
 
-2. Navegue até o diretório `moss-owlc/ola/src/`.
 
-3. Crie um ambiente virtual (opcional, mas recomendado):
+2. Crie um ambiente virtual (opcional, mas recomendado):
    ```bash
    python3 -m venv venv
    ```
 
-4. Ative o ambiente virtual:
+3. Ative o ambiente virtual:
    - No Linux/macOS:
      ```bash
      source venv/bin/activate
@@ -53,13 +52,15 @@ Para executar o MOSS-OWLC e o OSA, siga estes passos:
      .\venv\Scripts\activate.bat
      ```
 
-5. Instale a biblioteca necessária `PLY`:
+4. Navegue até o diretório `moss-owlc/ola/src/`.\
+   
+6. Instale as biblioteca necessárias `PLY e colorama`:
    ```bash
    pip install ply
    pip install colorama
    ```
 
-6. Execute o analisador sintático:
+7. Execute o analisador sintático:
    ```bash
    python3 moss_owlc.py
    ```
