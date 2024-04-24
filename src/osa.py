@@ -56,13 +56,16 @@ def p_start(p):
                  | KEYWORD_SUBCLASSOF TWOPOINTS CLASS SPECIAL_SYMBOL sub_class_of
                  | KEYWORD_SUBCLASSOF TWOPOINTS NAMESPACE KEYWORD LPAREN property_expression sub_class_of
                  | KEYWORD_SUBCLASSOF CLASS SPECIAL_SYMBOL sub_class_of
-                 | PROPERTY KEYWORD CLASS SPECIAL_SYMBOL sub_class_of
-                 | PROPERTY KEYWORD LPAREN CLASS RPAREN sub_class_of
-                 | PROPERTY KEYWORD LPAREN equivalent_to_covered_expression RPAREN sub_class_of
+
+                 | OBJECT_PROPERTY KEYWORD CLASS SPECIAL_SYMBOL sub_class_of
+                 | OBJECT_PROPERTY KEYWORD LPAREN CLASS RPAREN sub_class_of
+                 | OBJECT_PROPERTY KEYWORD LPAREN equivalent_to_covered_expression RPAREN sub_class_of
                  | empty
 
-    sub_class_expression : PROPERTY KEYWORD CLASS sub_class_expression
-                         | SPECIAL_SYMBOL PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
+    sub_class_expression : DATA_PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
+                         | SPECIAL_SYMBOL DATA_PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE sub_class_expression
+                         | OBJECT_PROPERTY KEYWORD CLASS sub_class_expression
+                         | SPECIAL_SYMBOL OBJECT_PROPERTY KEYWORD CLASS sub_class_expression
                          | empty
 
 
@@ -75,11 +78,14 @@ def p_start(p):
 
 
 
-    equivalent_to_expression : CLASS KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN
-                             | CLASS KEYWORD LPAREN PROPERTY KEYWORD CLASS RPAREN equivalent_to_expression
+    equivalent_to_expression : CLASS KEYWORD LPAREN DATA_PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE LCOLCH SPECIAL_SYMBOL SPECIAL_SYMBOL NUMERAL RCOLCH RPAREN equivalent_to_expression
+
+                             | CLASS KEYWORD LPAREN OBJECT_PROPERTY KEYWORD CLASS RPAREN equivalent_to_expression
                              | CLASS KEYWORD LPAREN PROPERTY KEYWORD LPAREN property_expression equivalent_to_expression
+
                              | KEYWORD LPAREN PROPERTY KEYWORD LPAREN property_expression equivalent_to_expression
                              | KEYWORD LPAREN PROPERTY KEYWORD NAMESPACE TWOPOINTS TYPE RPAREN equivalent_to_expression
+
                              | SPECIAL_SYMBOL CLASS equivalent_to_expression
                              | SPECIAL_SYMBOL CLASS SPECIAL_SYMBOL equivalent_to_expression
                              | equivalent_to_enumerated_expression
@@ -166,7 +172,7 @@ def parse_owl_input(input_text):
     global error_count
     error_count = 0
 
-    parser = ply.yacc.yacc()
+    parser = ply.yacc.yacc(debug=False, debuglog=False)
 
     result = parser.parse(input_text, tracking=True)
 

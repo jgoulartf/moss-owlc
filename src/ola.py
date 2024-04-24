@@ -106,7 +106,7 @@ def t_DATA_PROPERTY(t):
     t.lexer.lexpos = (t.lexer.lexpos - tamanho)
     return t
 def t_OBJECT_PROPERTY(t):
-    r"""(?<![A-Z])\b[a-z]+[A-Z][a-zA-Z]*\s[a-z]+\s[A-Z][a-zA-Z]*(?![a-zA-Z0-9_])"""
+    r"""(?<![A-Z])\b[a-z]+[A-Z][a-zA-Z]*\s[a-z]+\s(?:\([A-Z][a-zA-Z]*(?![a-zA-Z0-9_])|[A-Z][a-zA-Z]*(?![a-zA-Z0-9_]))"""
     tamanho = len(t.value)
     t.value = match_group(t, "((?<![A-Z])\\b[a-z]+[A-Z][a-zA-Z]*)\s[a-z]+\s[A-Z][a-zA-Z]*(?![a-zA-Z0-9_])")
     tamanho = tamanho - len(t.value)
@@ -143,12 +143,8 @@ def t_SPECIAL_SYMBOL(t):
 
 
 def t_NAMESPACE(t):
-    r"""([a-z]+)"""
-    #print("t:", t)
-    #re.search(r'([a-z]+):',t)
-    #print("re.match: ", )
-    #t.value = re.match(r'([a-z]+):', t.value).group(1)
-    #t.value = t.value[:-1]  # Removing the colon from the matched text
+    r"""[a-z]+"""
+    print(t)
     return t
 
 
