@@ -1,5 +1,4 @@
 Class: Pizza
-
 SubClassOf:
     hasBase some PizzaBase,
     hasCaloricContent some xsd:integer

@@ -34,7 +34,8 @@ def display_menu():
     #print("- - - - - - - - - - - - - - - - - - - -")
     print("\t7. Classe primitiva com erro semântico de precedência de operadores")
     print("\t8. Classe com axioma de fechamento com erro semântico de precedência de operadores")
-    print("\t9. Classe primitiva com erro semântico de coerção de tipo\n")
+    print("\t9. Classe primitiva com erro semântico de coerção de tipo")
+    print("\t10. Teste de sobrecarregamento\n")
 
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 
@@ -96,6 +97,11 @@ def handle_user_choice(choice):
         print("Classe definida com erro semântico...")
         lexer_parser(read_file("../assets/classe_definida_erro_semantico.txt"))
         sint_parser(read_file('../assets/classe_definida_erro_semantico.txt'))
+
+    elif choice == '10':
+        print("Teste de sobrecarregamento...")
+        lexer_parser(read_file("../assets/teste_sobrecarregamento.txt"))
+        sint_parser(read_file('../assets/teste_sobrecarregamento.txt'))
 
     #elif choice == '9':
     #    print("Analisando a ontologia das pizzas...")

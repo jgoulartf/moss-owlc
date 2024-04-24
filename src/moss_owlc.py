@@ -22,7 +22,7 @@ nova_analise = False
 # Loop principal do programa
 while executando:
     user_choice = display_menu()
-    if user_choice in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+    if user_choice in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']:
         handle_user_choice(user_choice)
         nova_analise = True
     else:

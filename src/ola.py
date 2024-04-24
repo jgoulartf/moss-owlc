@@ -17,6 +17,8 @@ tokens = [
     'OR',
     'CLASS',
     'PROPERTY',
+    'DATA_PROPERTY',
+    'OBJECT_PROPERTY',
     'KEYWORD',
     'KEYWORD_CLASS',
     'KEYWORD_EQUIVALENTTO',
@@ -90,16 +92,35 @@ def t_INDIVIDUAL(t):
     return t
 
 
-def t_PROPERTY(t):
-    r"""has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z]) \s | ssn"""
+# def t_PROPERTY(t):
+#     r"""has[A-Z][a-zA-Z]*|is.*Of|[a-z]+[A-Z]+[a-z]+(?![a-zA-Z]) \s | ssn"""
+#     return t
+
+def t_DATA_PROPERTY(t):
+    r"""(?<![A-Z])\b[a-z]+[A-Z][a-zA-Z]*\s[a-z]+\s[a-z]+:[a-z]+"""
+
+    tamanho = len(t.value)
+    t.value = match_group(t, "((?<![A-Z])\\b[a-z]+[A-Z][a-zA-Z]*)\s[a-z]+\s[a-z]+:[a-z]+")
+    tamanho = tamanho - len(t.value)
+
+    t.lexer.lexpos = (t.lexer.lexpos - tamanho)
+    return t
+def t_OBJECT_PROPERTY(t):
+    r"""(?<![A-Z])\b[a-z]+[A-Z][a-zA-Z]*\s[a-z]+\s[A-Z][a-zA-Z]*(?![a-zA-Z0-9_])"""
+    tamanho = len(t.value)
+    t.value = match_group(t, "((?<![A-Z])\\b[a-z]+[A-Z][a-zA-Z]*)\s[a-z]+\s[A-Z][a-zA-Z]*(?![a-zA-Z0-9_])")
+    tamanho = tamanho - len(t.value)
+
+    t.lexer.lexpos = (t.lexer.lexpos - tamanho)
     return t
 
-
+def match_group(t, regex):
+    new_match = re.match(regex, t.value)
+    return new_match.group(1)
 def t_CARDINALITY(t):
     r"""\s+[0-9]\s+"""
     t.value = int(t.value)
     return t
-
 
 def t_TYPE(t):
     r"""(integer | INTEGER | boolean | BOOLEAN | decimal | DECIMAL | string | String | REAL | real)"""
